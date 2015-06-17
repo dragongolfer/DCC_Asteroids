@@ -25,7 +25,9 @@ class Asteroid(pygame.sprite.Sprite):
         self.x_axis = location[0] #cosine runs paralell to the x-axis
         self.y_axis = location[1] #sine runs paralell to the y-axis
         self.angle = random.randint(0, 360) #angle of rotation randomly selected 
+        self.angle_of_rotation = random.randint(0,360)
         self.angluar_momentum = 10 #amount of energy the asteroid has
+        self.angular_velocity = 10 #one degree of rotation per clock tick, based on frame rate
         self.image = pygame.image.load("Asteroid.gif").convert() #just the image of the asteroids
         #self.num_of_asteroids = 0
         self.rect = self.image.get_rect()#forms a rectangle for collision detection, if boxes touch they collide
@@ -35,9 +37,13 @@ class Asteroid(pygame.sprite.Sprite):
     def get_location(self):
         return (self.x_axis, self.y_axis)
 
+    def get_angle(self):
+        return self.angle_of_rotation
+
     def movement(self):
         self.x_axis += self.angluar_momentum * math.cos(math.radians(self.angle))#uses trig functions to derive the proper
         self.y_axis -= self.angluar_momentum * math.sin(math.radians(self.angle))#movement along a 2D plane for the asteroid
+        self.angle_of_rotation += self.angular_velocity
         if self.x_axis > 800: #if x axis is greater than screen size then adjust the x axis
             self.x_axis = self.x_axis - 800
         if self.x_axis < 0:
@@ -47,6 +53,16 @@ class Asteroid(pygame.sprite.Sprite):
         if self.y_axis < 0:
             self.y_axis = self.y_axis + 800
         return
+
+
+def rot_center(image, angle):
+    '''rotate an image while keeping its center and size'''
+    orig_rect = image.get_rect()
+    rot_image = pygame.transform.rotate(image, angle)
+    rot_rect = orig_rect.copy()
+    rot_rect.center = rot_image.get_rect().center
+    rot_image = rot_image.subsurface(rot_rect).copy()
+    return rot_image
 
 
 def spawn_asteroids():
@@ -69,7 +85,8 @@ def spawn_asteroids():
         screen.fill(white) #has to be outside the foor loop or only one asteroid will appear!       
         for lone_asteroid in asteroid_list:
             asteroid_position = lone_asteroid.get_location()
-            screen.blit(lone_asteroid.image, asteroid_position)
+            rot_image = rot_center(lone_asteroid.image, lone_asteroid.get_angle())
+            screen.blit(rot_image, asteroid_position)
             lone_asteroid.movement()
             #screen.blit(lone_asteroid.image, asteroid_position)
             if math.sqrt((lone_asteroid1.x_axis - lone_asteroid2.x_axis)**2 + (lone_asteroid1.y_axis - lone_asteroid2.y_axis)**2) < 20:#pygame.sprite.collide_circle(lone_asteroid1, lone_asteroid2):#this is for collision detection
