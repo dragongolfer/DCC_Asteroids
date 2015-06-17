@@ -5,7 +5,7 @@ pygame.init()
 
 class Asteroid(pygame.sprite.Sprite):
     def __init__(self, location):
-        pygame.sprite.Sprite.__init__(self)
+        pygame.sprite.Sprite.__init__(self, self.groups)
         self.x_axis = 1 #cosine runs paralell to the x-axis
         self.y_axis = 1 #sine runs paralell to the y-axis
         self.angle = random.randint(0, 360) #angle of rotation randomly selected 
