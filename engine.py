@@ -41,7 +41,7 @@ class Asteroid(pygame.sprite.Sprite):
         self.speed = 1
         return
         
-    def ProcessTimeIncrement(self,size):
+    def update(self,size):
         self.x += self.speed * math.cos(math.radians(self.angle))
         self.y -= self.speed * math.sin(math.radians(self.angle))
         if self.x > 800:
