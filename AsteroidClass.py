@@ -22,6 +22,9 @@ class Asteroid(pygame.sprite.Sprite):
     def get_angle(self):
         return self.angle_of_rotation
 
+    def get_radius(self):
+        return self.radius
+
     def update(self):
         self.x_axis += self.angluar_momentum * math.cos(math.radians(self.angle))#uses trig functions to derive the proper
         self.y_axis -= self.angluar_momentum * math.sin(math.radians(self.angle))#movement along a 2D plane for the asteroid
