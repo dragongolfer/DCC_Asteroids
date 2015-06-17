@@ -52,7 +52,10 @@ class Ship(pygame.sprite.Sprite):
     #sets thrust to true if up arrow is pressed.
     def set_thrust(self, thrust):
         self.thrust = thrust
- 
+
+    def shoot(self):
+        return True
+
     #color value is used to set the background color of the image to black so the background image is transparent.
     def draw(self,screen):
         self.image.set_colorkey(BLACK)
@@ -89,6 +92,8 @@ class Ship(pygame.sprite.Sprite):
     def keydown(self,event):
 #     ang_vel is how fast the ship will rotate
         ang_vel = 4.5
+        if event.key == pygame.K_ESCAPE:
+            pygame.quit()
         if event.key == pygame.K_LEFT:
             self.set_angle_vel(ang_vel)
         if event.key == pygame.K_RIGHT:
@@ -96,7 +101,7 @@ class Ship(pygame.sprite.Sprite):
         if event.key == pygame.K_UP:
             self.set_thrust(True)
         if event.key == pygame.K_SPACE:
-            self.shoot()
+            return self.shoot()
 
     def keyup(self,event):
         if event.key in (pygame.K_LEFT,pygame.K_RIGHT):
