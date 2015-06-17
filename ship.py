@@ -86,6 +86,9 @@ class Ship(pygame.sprite.Sprite):
     def set_angle_vel(self, vel):
         self.angle_vel = vel
 
+    def get_radius(self):
+        return self.radius
+
     def checkCollision(self,asteroid_center, asteroid_location):
         pass
 
