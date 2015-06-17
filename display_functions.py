@@ -27,6 +27,81 @@ class Asteroid():
         return self.location
 '''
 
+def setScreenSize(x, y):
+    size = x, y
+    return size
+
+def createScreen(size):
+    screen = pygame.display.set_mode(size)
+    return screen
+
+def displayStartupScreen():
+    # Set Screen parameters
+    size = setScreenSize(800, 800)
+    screen = createScreen(size)
+
+    pygame.display.set_caption('Asteroids For The Win!')
+    selection = 1    
+    while True:
+        # Process Menu Selection Inputs
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT: 
+                sys.exit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_DOWN:
+                    selection += 1
+                if event.key == pygame.K_UP:
+                    selection -= 1
+                if event.key == pygame.K_RETURN:
+                    return selection
+                if event.key == pygame.K_ESCAPE:
+                    sys.exit()
+            
+            if selection > 2:
+                selection = 1
+            if selection < 1:
+                selection = 2
+        
+        # Setup Background
+        backgroundimage = pygame.image.load("StarField_2.png")
+        background = pygame.transform.scale(backgroundimage,(size))
+        
+        # Setup "ASTEROIDS" Title
+        font = pygame.font.Font(None, 100)
+        asteroidText = font.render("ASTEROIDS", 1, (255,255,255), (0,0,0))
+        asteroidTextPos = asteroidText.get_rect()
+        asteroidTextPos.centerx = background.get_rect().centerx
+        asteroidTextPos.centery = (background.get_rect().centery - 50)
+        
+        # Setup "START" Menu button
+        font = pygame.font.Font(None, 36)
+        if selection == 1: 
+            startText = font.render("START GAME", 1, (255,255,255), (100,100,100))
+        else:
+            startText = font.render("START GAME", 1, (255,255,255), (0,0,0))
+        startTextPos = startText.get_rect()
+        startTextPos.centerx = background.get_rect().centerx
+        startTextPos.centery = (background.get_rect().centery + 20)
+            
+        # Setup "OPTIONS" Menu button
+        if selection == 2: 
+            optionsText = font.render("OPTIONS", 1, (255,255,255), (100,100,100))
+        else:
+            optionsText = font.render("OPTIONS", 1, (255,255,255), (0,0,0))
+        optionsTextPos = optionsText.get_rect()
+        optionsTextPos.centerx = background.get_rect().centerx
+        optionsTextPos.centery = (background.get_rect().centery + 50) 
+        
+        # Blit Screen
+        screen.blit(background, (0,0))
+        screen.blit(asteroidText, asteroidTextPos)
+        screen.blit(startText, startTextPos)
+        screen.blit(optionsText, optionsTextPos)
+        pygame.display.flip()
+    
+    #raw_input("Press Enter to continue")
+    return screen
+
 def rot_center(image, angle):
     '''rotate an image while keeping its center and size'''
     orig_rect = image.get_rect()
@@ -37,10 +112,11 @@ def rot_center(image, angle):
     return rot_image
 
 
-def displayGameScreen(objectList, gameScreen):
+def displayGameScreen(objectList, gameScreen, size):
     #SET BACKGROUND
-    bg = pygame.image.load("Graphics_Assets\star_ground.bmp")
-    gameScreen.blit(bg, (0,0))
+    bgImage = pygame.image.load("Graphics_Assets\star_ground_2.png")
+    backGround = pygame.transform.scale(bgImage, (size))
+    gameScreen.blit(backGround, (0,0))
     
     #SET SHIP
     ship = objectList[0]
@@ -70,26 +146,13 @@ def displayGameScreen(objectList, gameScreen):
             gameScreen.blit(rotBullet, (bLoc))
             pygame.display.update()
     '''
-    asteroids = objectList[1:]
-    for a in asteroids:
-        aImg = pygame.image.load("Graphics_Assets\meteor_retro_3.png")
-        aLoc = a.get_location()
-        gameScreen.blit(aImg, (aLoc))
-
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            pygame.quit()
-            sys.exit()
-
-    #DISPLAY UPDATE
-    pygame.display.update()
 
 
     #COLLISION
     #Set Asteroids
     asteroids = objectList[1:]
     for a in asteroids:
-        aImg = pygame.image.load("Graphics_Assets\meteor.png")
+        aImg = pygame.image.load("Graphics_Assets\meteor_retro_3.png")
         aLoc = a.get_location()
         a.rect = aImg.get_rect()
         a.rect.x = a.x
@@ -100,7 +163,18 @@ def displayGameScreen(objectList, gameScreen):
     for asteroid in asteroid_list:
             if pygame.sprite.collide_rect(ship,asteroid):
                 objectList.remove(asteroid)
- 
+
+
+    #QUIT OPERATION
+    for event in pygame.event.get():
+        if event.type == QUIT:
+            pygame.quit()
+            sys.exit()
+
+    #DISPLAY UPDATE
+    pygame.display.update() 
+
+
 '''    
 #TESTING PURPOSES
 s = Ship()

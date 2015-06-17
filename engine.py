@@ -119,70 +119,6 @@ def displayGameScreen(objectList, screen):
     
     return
 '''
-def displayStartupScreen(screen):
-    pygame.display.set_caption('Asteroids For The Win!')
-    selection = 1    
-    while True:
-        # Process Menu Selection Inputs
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT: 
-                sys.exit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_DOWN:
-                    selection += 1
-                if event.key == pygame.K_UP:
-                    selection -= 1
-                if event.key == pygame.K_RETURN:
-                    return selection
-                if event.key == pygame.K_ESCAPE:
-                    sys.exit()
-            
-            if selection > 2:
-                selection = 1
-            if selection < 1:
-                selection = 2
-        
-        # Setup Background
-        backgroundimage = pygame.image.load("StarField_2.png")
-        background = pygame.transform.scale(backgroundimage,(width,height))
-        
-        # Setup "ASTEROIDS" Title
-        font = pygame.font.Font(None, 100)
-        asteroidText = font.render("ASTEROIDS", 1, (255,255,255), (0,0,0))
-        asteroidTextPos = asteroidText.get_rect()
-        asteroidTextPos.centerx = background.get_rect().centerx
-        asteroidTextPos.centery = (background.get_rect().centery - 50)
-        
-        # Setup "START" Menu button
-        font = pygame.font.Font(None, 36)
-        if selection == 1: 
-            startText = font.render("START GAME", 1, (255,255,255), (100,100,100))
-        else:
-            startText = font.render("START GAME", 1, (255,255,255), (0,0,0))
-        startTextPos = startText.get_rect()
-        startTextPos.centerx = background.get_rect().centerx
-        startTextPos.centery = (background.get_rect().centery + 20)
-            
-        # Setup "OPTIONS" Menu button
-        if selection == 2: 
-            optionsText = font.render("OPTIONS", 1, (255,255,255), (100,100,100))
-        else:
-            optionsText = font.render("OPTIONS", 1, (255,255,255), (0,0,0))
-        optionsTextPos = optionsText.get_rect()
-        optionsTextPos.centerx = background.get_rect().centerx
-        optionsTextPos.centery = (background.get_rect().centery + 50) 
-        
-        # Blit Screen
-        screen.blit(background, (0,0))
-        screen.blit(asteroidText, asteroidTextPos)
-        screen.blit(startText, startTextPos)
-        screen.blit(optionsText, optionsTextPos)
-        pygame.display.flip()
-    
-    #raw_input("Press Enter to continue")
-    return screen
-
-
 
 # Single Round of the main game loop    
 def main(objectList, screen, lives,size):
@@ -229,7 +165,7 @@ def main(objectList, screen, lives,size):
 
         # Process Graphics
         debug("STARTING GRAPHICS ENGINE")
-        displayGameScreen(objectList, screen)
+        displayGameScreen(objectList, screen, size)
         if lives == 0:
             return True
     
@@ -237,20 +173,13 @@ def main(objectList, screen, lives,size):
     return False # Change this to a gameOver test (No more lives, not more, whatever)
 
 
-
-
-
 # Game Starting point
 if __name__ == "__main__":
     # Clear Console Screen
     os.system("cls")
     
-    # Set Screen parameters
-    size = width, height = 800, 800
-    screen = pygame.display.set_mode(size)
-    
     # Display Startup Screen, and return menu selection (Start Game = 1, Options = 2)
-    menuSelection = displayStartupScreen(screen)
+    menuSelection = displayStartupScreen()
     
     # Start Game Menu Option Selected
     if menuSelection == 1:
@@ -264,6 +193,7 @@ if __name__ == "__main__":
             objectList = []
             
             # Create the ship object
+            size = setScreenSize(800, 800) #redefined size variable as call of setScreenSize function
             initial_pos_ship = [size[0]/2,size[1]/2]
             initial_vel = [0,0]
             initial_angle = 0
@@ -276,7 +206,8 @@ if __name__ == "__main__":
                 asteroid = Asteroid()
                 objectList.append(asteroid)
             
-            # Start the main game loop        
+            # Start the main game loop      
+            screen = createScreen(size)
             gameOver = main(objectList, screen, lives,size)
     
     # Options Menu Selected
