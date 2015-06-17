@@ -36,34 +36,34 @@ def debug(message):
     
 
         
-class Asteroid(pygame.sprite.Sprite):
-    def __init__(self):
-        pygame.sprite.Sprite.__init__(self, self.groups)
-        self.x = 1
-        self.y = 1
-        self.angle = randint(0,360)
-        self.speed = 1
-        return
+# class Asteroid(pygame.sprite.Sprite):
+    # def __init__(self):
+        # pygame.sprite.Sprite.__init__(self, self.groups)
+        # self.x = 1
+        # self.y = 1
+        # self.angle = randint(0,360)
+        # self.speed = 1
+        # return
         
-    def update(self, size):
-        self.x += self.speed * math.cos(math.radians(self.angle))
-        self.y -= self.speed * math.sin(math.radians(self.angle))
-        if self.x > 800:
-            self.x -= 800
-        if self.x < 0:
-            self.x += 800
-        if self.y > 800:
-            self.y -= 800
-        if self.y < 0:
-            self.y += 800
-        return
+    # def update(self, size):
+        # self.x += self.speed * math.cos(math.radians(self.angle))
+        # self.y -= self.speed * math.sin(math.radians(self.angle))
+        # if self.x > 800:
+            # self.x -= 800
+        # if self.x < 0:
+            # self.x += 800
+        # if self.y > 800:
+            # self.y -= 800
+        # if self.y < 0:
+            # self.y += 800
+        # return
         
-    def get_location(self):
-        return (self.x, self.y)
+    # def get_location(self):
+        # return (self.x, self.y)
         
-    def getSize(self):
-        pass
-        return
+    # def getSize(self):
+        # pass
+        # return
 
 
 # Single Round of the main game loop    
