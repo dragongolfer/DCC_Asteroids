@@ -1,7 +1,9 @@
 from random import *
 import pygame
 import sys
+import math
 from pygame.locals import *
+from AsteroidClass import *
 
 pygame.init()
 
@@ -105,21 +107,27 @@ def displayStartupScreen():
 def rot_center(image, angle):
     '''rotate an image while keeping its center and size'''
     orig_rect = image.get_rect()
-    rot_image = pygame.transform.rotate(image, angle)
+    rot_image = pygame.transform.rotate(image, float(angle))
     rot_rect = orig_rect.copy()
     rot_rect.center = rot_image.get_rect().center
     rot_image = rot_image.subsurface(rot_rect).copy()
     return rot_image
 
+def collision(shipLoc, astrLoc, shipRad, astrRad):
+    collision = False
+    if math.sqrt((shipLoc[0] - astrLoc[0])**2 + (shipLoc[1] - astrLoc[1])**2) < (shipRad + astrRad):
+        collision = True
+    return collision
 
-def displayGameScreen(objectList, gameScreen, size):
+def displayGameScreen(ship, asteroidGroup, bulletGroup, gameScreen, size):
+    #pygame.display.set_caption(str(clock.get_fps()))
+
     #SET BACKGROUND
     bgImage = pygame.image.load("Graphics_Assets\star_ground_2.png")
     backGround = pygame.transform.scale(bgImage, (size))
     gameScreen.blit(backGround, (0,0))
     
     #SET SHIP
-    ship = objectList[0]
     shipImg = pygame.image.load("Graphics_Assets\ship_1.png")
     shipLoc = ship.get_position()
     shipAngle = ship.get_angle()
@@ -128,26 +136,37 @@ def displayGameScreen(objectList, gameScreen, size):
     shipImg.set_colorkey((0,0,0))
     gameScreen.blit(rotShip, (shipLoc))
     
-    #SET ASTEROIDS or BULLET
+
+    for each in asteroidGroup:
+        aImg = pygame.image.load("Graphics_Assets\meteor_retro_3.png")
+        aLoc = each.get_location()
+        gameScreen.blit(aImg, (aLoc))
+
+    for each in bulletGroup:
+        bImg = pygame.image.load("Graphics_Assets\laser.png")
+        bLoc = each.get_location()
+        bAngle = each.get_angle()
+        rotBullet = rot_center(bImg, bAngle)
+
+        #REMOVE BULLETS
+        if (bLoc[0] < 0) or (bLoc[0] > size[0]):
+            bulletGroup.remove(each)
+
+        elif (bLoc[1] < 0) or (bLoc[1] > size[1]):
+            bulletGroup.remove(each)
+
+        gameScreen.blit(rotBullet, (bLoc))
+
+
+    #COLLISION CHECK
+    for asteroid in asteroidGroup:
+        for bullet in bulletGroup:
+            c = collision(asteroid.get_location(), bullet.get_location(), asteroid.get_radius(), bullet.get_radius())
+            if c == True:
+                bulletGroup.remove(bullet)
+                asteroidGroup.remove(asteroid)
+    
     '''
-    for index, each in enumerate(objectList)
-        if isininstance(each, Asteroid):
-            aImg = pygame.image.load("Graphics_Assets\meteor_retro_3.png")
-            aLoc = a.get_location()
-            gameScreen.blit(aImg, (aLoc))
-        
-        elif isininstance(each, Bullet):
-            bImg = pygame.image.load("Graphics_Assets\##########")
-            bLoc = each.get_position()
-            bAngle = each.get_angle()
-            rotBullet = rot_center(bImg, (bLoc))
-
-            bImg.set_colorkey((0,0,0))
-            gameScreen.blit(rotBullet, (bLoc))
-            pygame.display.update()
-    '''
-
-
     #COLLISION
     #Set Asteroids
     asteroids = objectList[1:]
@@ -163,13 +182,7 @@ def displayGameScreen(objectList, gameScreen, size):
     for asteroid in asteroid_list:
             if pygame.sprite.collide_rect(ship,asteroid):
                 objectList.remove(asteroid)
-
-
-    #QUIT OPERATION
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            pygame.quit()
-            sys.exit()
+    '''
 
     #DISPLAY UPDATE
     pygame.display.update() 
