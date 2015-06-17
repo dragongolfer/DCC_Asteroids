@@ -17,12 +17,16 @@ import pygame
 import os
 from random import *
 import math
-pygame.init()
+
 
 from ship import *              # Ryan
-# from AsteroidsFTW import *      # Rob
+# from TrigRoids import *      # Rob
 from display_functions import * # Matt
-from bulletClass import *       #Mike
+from bulletClass import *       # Mike
+
+pygame.init()
+
+
 
 def debug(message):
     DEBUG = True
@@ -34,14 +38,14 @@ def debug(message):
         
 class Asteroid(pygame.sprite.Sprite):
     def __init__(self):
-        pygame.sprite.Sprite.__init__(self)
+        pygame.sprite.Sprite.__init__(self, self.groups)
         self.x = 1
         self.y = 1
         self.angle = randint(0,360)
         self.speed = 1
         return
         
-    def update(self,size):
+    def update(self, size):
         self.x += self.speed * math.cos(math.radians(self.angle))
         self.y -= self.speed * math.sin(math.radians(self.angle))
         if self.x > 800:
@@ -63,27 +67,40 @@ class Asteroid(pygame.sprite.Sprite):
 
 
 # Single Round of the main game loop    
-def main(objectList, screen, lives,size):
+def main(ship, asteroidGroup, screen, lives, size):
     endOfRound = False
     clock = pygame.time.Clock()
+
+
     while not endOfRound:
         # 60 Framse per second
+        os.system('cls')
         clock.tick(60) # Game will render at 60 frames per second
     
         # Process User Inputs
-        ship = objectList[0]
+        isShoot = False
         for event in pygame.event.get():#user does something
             if event.type == pygame.QUIT:
-                endOfRound = True
+                pygame.quit()
+                sys.exit()
             elif event.type == pygame.KEYDOWN:
-                ship.keydown(event)
+                isShoot = ship.keydown(event)
             elif event.type == pygame.KEYUP:
-                ship.keyup(event)
+                isShoot = ship.keyup(event)
 
+        if isShoot:
+            Bullet(ship.get_position(), ship.get_angle())
+                
         # Process Time Increment
         debug("STARTING PROCESS TIME INCREMENT")
-        for each in objectList:
+        #for each in objectList:
+        ship.update(size)
+        for each in asteroidGroup:
             each.update(size)
+            print "Ast", each.get_location()
+        for each in bulletGroup:
+            each.update(size)
+            print "Bul", each.get_location()
 
         # Process Collision Detect
         debug("STARTING COLLISION DETECT")
@@ -91,7 +108,7 @@ def main(objectList, screen, lives,size):
 
         # Process Graphics
         debug("STARTING GRAPHICS ENGINE")
-        displayGameScreen(objectList, screen, size)
+        displayGameScreen(ship, asteroidGroup, bulletGroup, screen, size)
         if lives == 0:
             return True
     
@@ -101,6 +118,10 @@ def main(objectList, screen, lives,size):
 
 # Game Starting point
 if __name__ == "__main__":
+    bulletGroup = pygame.sprite.Group()
+    Bullet.groups = bulletGroup
+    asteroidGroup = pygame.sprite.Group()
+    Asteroid.groups = asteroidGroup
     # Clear Console Screen
     os.system("cls")
     
@@ -113,10 +134,11 @@ if __name__ == "__main__":
         gameOver = False
         while not gameOver:
             # Hard coded number of asteroids. May change later depending on difficulty/level/rounds.
-            numberOfAsteroids = 20
+            numberOfAsteroids = 2
         
             # Initialize our Object list
             objectList = []
+
             
             # Create the ship object
             size = setScreenSize(800, 800) #redefined size variable as call of setScreenSize function
@@ -128,13 +150,13 @@ if __name__ == "__main__":
             
             # Create the asteroids
             #asteroidImage = pygame.image.load("sgilogo2.gif").convert() #set player image
-            for i in range(0, numberOfAsteroids + 1):
-                asteroid = Asteroid()
-                objectList.append(asteroid)
-            
+            for i in range(0, numberOfAsteroids):
+                Asteroid() # Creates an Asteroid Object. Automatically dumps it into the asteroid list.
+
+
             # Start the main game loop      
             screen = createScreen(size)
-            gameOver = main(objectList, screen, lives,size)
+            gameOver = main(ship, asteroidGroup, screen, lives,size)
     
     # Options Menu Selected
     if menuSelection == 2:
