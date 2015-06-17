@@ -25,5 +25,5 @@ class Bullet(pygame.sprite.Sprite):
     def get_angle(self):
         return int(self.angle)
         
-    def getSize(self):
+    def get_radius(self):
         return self.radius
