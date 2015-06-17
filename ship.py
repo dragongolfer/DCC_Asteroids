@@ -58,7 +58,7 @@ class Ship(pygame.sprite.Sprite):
         self.image.set_colorkey(BLACK)
         screen.blit(rot_center(self.image, self.angle),self.pos)
  
-    def ProcessTimeIncrement(self,size):
+    def update(self,size):
         #added a friction element so ship will stop moving if key is not pressed.
         acc = 0.5
         fric = acc / 20
