@@ -20,7 +20,7 @@ import math
 
 
 from ship import *              # Ryan
-# from TrigRoids import *      # Rob
+from AsteroidClass import *     # Rob
 from display_functions import * # Matt
 from bulletClass import *       # Mike
 
