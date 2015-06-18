@@ -56,6 +56,7 @@ class Ship(pygame.sprite.Sprite):
         self.time_counter = 0
         self.shield_counter = 0
         self.shield = False
+        self.score_recorded = False
     
     def get_position(self):
         return (self.pos[0],self.pos[1])
@@ -192,9 +193,17 @@ class Ship(pygame.sprite.Sprite):
 
     def update_score(self):
         self.score += 100
+        print "Update Score"
 
     def get_score(self):
         return self.score
 
     def get_thrust(self):
         return self.thrust
+
+    def get_score_recorded(self):
+        return self.score_recorded
+
+    def set_score_recorded(self,value):
+        self.score_recorded = value
+
