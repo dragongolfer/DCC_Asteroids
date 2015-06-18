@@ -11,12 +11,12 @@ class Bullet(pygame.sprite.Sprite):
         self.angle = float(angle)
         self.speed = 15
         self.radius = 10
+        self.large = False
         return
         
     def update(self, size): # Size is only used for the function call similarity with the ship and asteroid class
         self.x += self.speed * math.cos(math.radians(self.angle))
         self.y -= self.speed * math.sin(math.radians(self.angle))
-
         return
         
     def get_location(self):
@@ -27,3 +27,11 @@ class Bullet(pygame.sprite.Sprite):
         
     def get_radius(self):
         return self.radius
+
+    def get_large(self):
+        return self.large
+
+    def set_large(self,value):
+        self.large = value
+
+
