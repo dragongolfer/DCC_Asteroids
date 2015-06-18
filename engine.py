@@ -24,6 +24,7 @@ from AsteroidClass import *     # Rob
 from bulletClass import *       # Michael
 from explosionClass import *    # Michael
 from display_functions import * # Matt
+from OptionsScreen import *     # Michael
 
 pygame.init()
 
@@ -72,8 +73,7 @@ def main(ship, asteroidGroup, explosionGroup, screen, lives, size):
                     pygame.mixer.music.play()
                 if isShoot:
                     Bullet(ship.get_position(), ship.get_angle())
-                if isShoot:
-                    Bullet(ship.get_position(), ship.get_angle())
+
         else:
             debug("END OF GAME DAMNIT!")
             endOfGamePause += 1 
@@ -144,13 +144,16 @@ if __name__ == "__main__":
     explosionGroup = pygame.sprite.Group()
     Explosion.groups = explosionGroup
     
+    #Default Options
+    options = ["ACE"]
+    
     # Clear Console Screen
     os.system("cls")
     
     while True:
         # Display Startup Screen, and return menu selection (Start Game = 1, Options = 2)
         menuSelection = displayStartupScreen()
-        
+        print menuSelection
         # Start Game Menu Option Selected
         if menuSelection == 1:
             lives = 3
@@ -180,7 +183,7 @@ if __name__ == "__main__":
         
         # Options Menu Selected
         if menuSelection == 2:
-            pass
+            options = displayOptionsScreen(options)
          
         
         
