@@ -63,7 +63,9 @@ class Ship(pygame.sprite.Sprite):
             ship_thrust_sound.stop()
 
     def shoot(self):
+        ship_missile_sound.set_volume(.5)
         ship_missile_sound.play()
+
         return True
 
     #color value is used to set the background color of the image to black so the background image is transparent.
@@ -74,7 +76,7 @@ class Ship(pygame.sprite.Sprite):
     def update(self,size):
         #added a friction element so ship will stop moving if key is not pressed.
         acc = 0.2
-        fric = acc / 20
+        fric = acc / 18
         
         self.angle += self.angle_vel
  
