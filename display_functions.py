@@ -113,15 +113,15 @@ def rot_center(image, angle):
     rot_image = rot_image.subsurface(rot_rect).copy()
     return rot_image
 
-def collision(shipLoc, astrLoc, shipRad, astrRad):
+def collision(obj_1_Loc, obj_2_Loc, obj_1_Rad, obj_2_Rad):
     collision = False
-    if math.sqrt((shipLoc[0] - astrLoc[0])**2 + (shipLoc[1] - astrLoc[1])**2) < (shipRad + astrRad):
+    if math.sqrt((obj_1_Loc[0] - obj_2_Loc[0])**2 + (obj_1_Loc[1] - obj_2_Loc[1])**2) < (obj_1_Rad + obj_2_Rad):
         collision = True
     return collision
 
 def displayGameScreen(ship, asteroidGroup, bulletGroup, gameScreen, size):
     #pygame.display.set_caption(str(clock.get_fps()))
-
+    
     #SET BACKGROUND
     bgImage = pygame.image.load("Graphics_Assets\star_ground_2.png")
     backGround = pygame.transform.scale(bgImage, (size))
@@ -159,6 +159,18 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, gameScreen, size):
 
 
     #COLLISION CHECK
+    #Asteroid v Ship
+    print ship.get_lives()
+    for asteroid in asteroidGroup:
+        if ship.get_invincible() == False:
+            c = collision(ship.get_position(), asteroid.get_location(), ship.get_radius(), asteroid.get_radius())
+            if c == True:
+                ship.death()
+                print ship.get_lives()
+                
+
+            
+    #Bullet v Asteroid
     for asteroid in asteroidGroup:
         for bullet in bulletGroup:
             c = collision(asteroid.get_location(), bullet.get_location(), asteroid.get_radius(), bullet.get_radius())
