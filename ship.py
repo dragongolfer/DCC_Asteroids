@@ -6,7 +6,8 @@ BLACK = (0,0,0)
 WHITE = (255,255,255)
 SIZE = (800,800)
 
-
+pygame.init()
+ship_thrust_sound = pygame.mixer.Sound("Graphics_Assets\go_thrust.ogg")
 
 #used for calculating forward direction based on angle provided
 def angle_to_vector(ang):
@@ -56,6 +57,11 @@ class Ship(pygame.sprite.Sprite):
     #sets thrust to true if up arrow is pressed.
     def set_thrust(self, thrust):
         self.thrust = thrust
+        print self.thrust
+        if self.thrust == True:
+            ship_thrust_sound.play()
+        else:
+            ship_thrust_sound.stop()
 
     def shoot(self):
         return True
