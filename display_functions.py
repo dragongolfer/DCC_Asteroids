@@ -108,7 +108,10 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, gameScre
     gameScreen.blit(background, (0,0))
     
     #SET SHIP
-    shipImg = pygame.image.load("Graphics_Assets\ship_1.png")
+    if ship.get_invincible() == False:
+        shipImg = pygame.image.load("Graphics_Assets\ship_1.png")
+    else:
+        shipImg = pygame.image.load("Graphics_Assets\ship_1_ghost.png")
     shipLoc = ship.get_position()
     shipAngle = ship.get_angle()
     rotShip = rot_center(shipImg, shipAngle)
@@ -120,7 +123,11 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, gameScre
     
 
     for each in asteroidGroup:
-        aImg = pygame.image.load("Graphics_Assets\meteor_retro_3.png")
+        rad = each.get_radius()
+        if rad == 15:
+            aImg = pygame.image.load("Graphics_Assets\meteor_retro_3.png")
+        elif rad == 30:
+            aImg = pygame.image.load("Graphics_Assets\meteor_retro_2.png")
         aLoc = each.get_location()
         gameScreen.blit(aImg, (aLoc))
 
@@ -155,7 +162,7 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, gameScre
             c = collision(asteroid.get_location(), bullet.get_location(), asteroid.get_radius(), bullet.get_radius())
             if c == True:
                 bulletGroup.remove(bullet)
-                #asteroid.make_small_asteroid()
+                asteroid.make_small_asteroids()
                 asteroidGroup.remove(asteroid)
 
                 ship.update_score()
