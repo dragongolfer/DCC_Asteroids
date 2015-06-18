@@ -31,7 +31,7 @@ def rot_center(image, angle):
 # currently image is name of file
 class Ship(pygame.sprite.Sprite):
     def __init__(self, pos, vel, angle):
-        pygame.sprite.Sprite.__init__(self)#
+        pygame.sprite.Sprite.__init__(self,self.groups)#
         self.pos = [pos[0],pos[1]]
         self.vel = [vel[0],vel[1]]
         self.angle = angle
@@ -41,7 +41,7 @@ class Ship(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         #x,y coordinates used for determing what the forward direction is
         self.forward = [0,0]
-        self.radius = 20
+        self.radius = 22.5
         self.score = 0
         self.lives = 3
         self.invincible = False
