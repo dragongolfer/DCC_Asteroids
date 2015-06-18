@@ -21,8 +21,9 @@ import math
 
 from ship import *              # Ryan
 from AsteroidClass import *     # Rob
-from display_functions import * # Matt
 from bulletClass import *       # Michael
+from explosionClass import *    # Michael
+from display_functions import * # Matt
 
 pygame.init()
 
@@ -38,7 +39,7 @@ def debug(message):
 
 
 # Single Round of the main game loop    
-def main(ship, asteroidGroup, screen, lives, size):
+def main(ship, asteroidGroup, explosionGroup, screen, lives, size):
     endOfRound = False
     clock = pygame.time.Clock()
 
@@ -72,6 +73,13 @@ def main(ship, asteroidGroup, screen, lives, size):
         for each in bulletGroup:
             each.update(size)
             debug(("Bul" + str(each.get_location())))
+        for each in explosionGroup:
+            each.update(size)
+            #debug(("Exp" + str(each.get_location() + str(each.get_counter()))))
+            if each.get_counter() <= 0:
+                explosionGroup.remove(each)
+
+            
            
         # Process Collision Detect
         debug("STARTING COLLISION DETECT")
@@ -79,7 +87,7 @@ def main(ship, asteroidGroup, screen, lives, size):
 
         # Process Graphics
         debug("STARTING GRAPHICS ENGINE")
-        displayGameScreen(ship, asteroidGroup, bulletGroup, screen, size)
+        displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, screen, size)
         if lives == 0:
             return True
     
@@ -94,12 +102,16 @@ def main(ship, asteroidGroup, screen, lives, size):
 
 # Game Starting point
 if __name__ == "__main__":
+    # Create Sprite Groups
     shipGroup = pygame.sprite.Group()
     Ship.groups = shipGroup
     bulletGroup = pygame.sprite.Group()
     Bullet.groups = bulletGroup
     asteroidGroup = pygame.sprite.Group()
     Asteroid.groups = asteroidGroup
+    explosionGroup = pygame.sprite.Group()
+    Explosion.groups = explosionGroup
+    
     # Clear Console Screen
     os.system("cls")
     
@@ -112,21 +124,15 @@ if __name__ == "__main__":
             lives = 3
             gameOver = False
             numberOfAsteroids = 0
+                            # Create the ship object
+            size = setScreenSize(800, 800) #redefined size variable as call of setScreenSize function
+            initial_pos_ship = [size[0]/2,size[1]/2]
+            initial_vel = [0,0]
+            initial_angle = 0
+            ship = Ship(initial_pos_ship,initial_vel,initial_angle)
             while not gameOver:
                 # Hard coded number of asteroids. May change later depending on difficulty/level/rounds.
                 numberOfAsteroids += 2
-            
-                # Initialize our Object list
-                objectList = []
-
-                
-                # Create the ship object
-                size = setScreenSize(800, 800) #redefined size variable as call of setScreenSize function
-                initial_pos_ship = [size[0]/2,size[1]/2]
-                initial_vel = [0,0]
-                initial_angle = 0
-                ship = Ship(initial_pos_ship,initial_vel,initial_angle)
-                objectList.append(ship)
                 
                 # Create the asteroids
                 #asteroidImage = pygame.image.load("sgilogo2.gif").convert() #set player image
@@ -136,7 +142,7 @@ if __name__ == "__main__":
 
                 # Start the main game loop      
                 screen = createScreen(size)
-                gameOver = main(ship, asteroidGroup, screen, lives,size)
+                gameOver = main(ship, asteroidGroup, explosionGroup, screen, lives,size)
         
         # Options Menu Selected
         if menuSelection == 2:
