@@ -42,6 +42,7 @@ def debug(message):
 def main(ship, asteroidGroup, explosionGroup, screen, lives, size):
     endOfRound = False
     clock = pygame.time.Clock()
+    endOfGamePause = 0
 
 
     while not endOfRound:
@@ -50,6 +51,31 @@ def main(ship, asteroidGroup, explosionGroup, screen, lives, size):
         clock.tick(60) # Game will render at 60 frames per second
     
         # Process User Inputs
+        if ship.get_lives() > 0:
+            # Player is still alive, Pass inputs to Ship class
+            isShoot = False
+            for event in pygame.event.get():#user does something
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                elif event.type == pygame.KEYDOWN:
+                    isShoot = ship.keydown(event)
+                elif event.type == pygame.KEYUP:
+                    isShoot = ship.keyup(event)
+                if isShoot:
+                    Bullet(ship.get_position(), ship.get_angle())
+        else:
+            debug("END OF GAME DAMNIT!")
+            endOfGamePause += 1
+            if endOfGamePause > 180:
+                for event in pygame.event.get():#user does something
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                        sys.exit()
+                    elif event.type == pygame.KEYDOWN:
+                        return True
+            
+        
         isShoot = False
         for event in pygame.event.get():#user does something
             if event.type == pygame.QUIT:
@@ -59,7 +85,6 @@ def main(ship, asteroidGroup, explosionGroup, screen, lives, size):
                 isShoot = ship.keydown(event)
             elif event.type == pygame.KEYUP:
                 isShoot = ship.keyup(event)
-
         if isShoot:
             Bullet(ship.get_position(), ship.get_angle())
                 
@@ -75,7 +100,7 @@ def main(ship, asteroidGroup, explosionGroup, screen, lives, size):
             debug(("Bul" + str(each.get_location())))
         for each in explosionGroup:
             each.update(size)
-            #debug(("Exp" + str(each.get_location() + str(each.get_counter()))))
+            debug(("Exp" + str(each.get_location())))# + str(each.get_counter()))))
             if each.get_counter() <= 0:
                 explosionGroup.remove(each)
 
@@ -88,15 +113,12 @@ def main(ship, asteroidGroup, explosionGroup, screen, lives, size):
         # Process Graphics
         debug("STARTING GRAPHICS ENGINE")
         displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, screen, size)
-        if lives == 0:
-            return True
-    
+
         if len(asteroidGroup) == 0:
             endOfRound = True
-            print ("Next Round")
+            debug("Next Round")
             return False
-    
-    
+
     return False # Change this to a gameOver test (No more lives, not more, whatever)
 
 
@@ -124,12 +146,14 @@ if __name__ == "__main__":
             lives = 3
             gameOver = False
             numberOfAsteroids = 0
-                            # Create the ship object
+            asteroidGroup.empty()
+            # Create the ship object
             size = setScreenSize(800, 800) #redefined size variable as call of setScreenSize function
             initial_pos_ship = [size[0]/2,size[1]/2]
             initial_vel = [0,0]
             initial_angle = 0
             ship = Ship(initial_pos_ship,initial_vel,initial_angle)
+            
             while not gameOver:
                 # Hard coded number of asteroids. May change later depending on difficulty/level/rounds.
                 numberOfAsteroids += 2
