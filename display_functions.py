@@ -114,7 +114,9 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, gameScre
     rotShip = rot_center(shipImg, shipAngle)
 
     shipImg.set_colorkey((0,0,0))
-    gameScreen.blit(rotShip, (shipLoc))
+
+    if ship.get_lives() > 0:
+        gameScreen.blit(rotShip, (shipLoc))
     
 
     for each in asteroidGroup:
@@ -140,15 +142,12 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, gameScre
 
     #COLLISION CHECK
     #Asteroid v Ship
-    print ship.get_lives()
-    
     if ship.get_invincible() == False:
         for asteroid in asteroidGroup:
             c = collision(ship.get_position(), asteroid.get_location(), ship.get_radius(), asteroid.get_radius())
             if c == True:
                 ship.death()
-                print ship.get_lives()  
-
+               
 
     #Bullet v Asteroid
     for asteroid in asteroidGroup:
@@ -181,14 +180,16 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, gameScre
     
     gameScreen.blit(livesText, livesTextPos)
 
+
     if ship.get_lives() <= 0:
         #GAME OVER
+    
         # Setup "GAME OVER" Title
         font = pygame.font.Font(None, 100)
         gameOverText = font.render("GAME OVER", 1, (255,255,255), (0,0,0))
         gameOverTextPos = gameOverText.get_rect()
         gameOverTextPos.centerx = background.get_rect().centerx
-        gameOverTextPos.centery = (background.get_rect().centery - 50)
+        gameOverTextPos.centery = background.get_rect().centery
     
         # Blit Screen
         gameScreen.blit(gameOverText, gameOverTextPos)
