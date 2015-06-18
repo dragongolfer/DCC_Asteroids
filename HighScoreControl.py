@@ -15,14 +15,14 @@ def readHighScoresFromFile():
     #print scoreList
     
     return scoreList
-    #return [["Mike",200.0],["Ace",40.0],["Bob",35.0],["Charlie",10.0],["Zero",1.0]]
+    #return [["Mike",200],["Ace",40],["Bob",35],["Charlie",10],["Zero",1]]
     
 def insertHighScore(scoreList, name, score):
     scoreToInsert = score
     insertLocation = 0
     insertFound = False
     for each in scoreList:
-        if scoreToInsert > float(each[1]):
+        if scoreToInsert > int(each[1]):
             insertFound = True
             break
         insertLocation += 1
