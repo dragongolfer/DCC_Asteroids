@@ -13,7 +13,7 @@ class Asteroid(pygame.sprite.Sprite):
         self.angluar_momentum = 10 #amount of energy the asteroid has
         self.angular_velocity = 10 #one degree of rotation per clock tick, based on frame rate
         self.image = pygame.image.load("Asteroid.gif").convert() #just the image of the asteroids
-        self.radius = 10
+        self.radius = 30
         return
 
     def get_location(self):
@@ -41,13 +41,13 @@ class Asteroid(pygame.sprite.Sprite):
         return
 
     def make_small_asteroids(self):# checks if radius is greater than 5, if it is creates two new asteroids with smaller radii
-        if self.radius > 5:
+        if self.radius > 15:
             smallAsteroid = Asteroid()
-            smallAsteroid.radius = 5
+            smallAsteroid.radius = 15
             smallAsteroid.x_axis = self.x_axis
             smallAsteroid.y_axis = self.y_axis
             smallAsteroid2 = Asteroid()
-            smallAsteroid2.radius = 5
+            smallAsteroid2.radius = 15
             smallAsteroid2.x_axis = self.x_axis
             smallAsteroid2.y_axis = self.y_axis
             return
