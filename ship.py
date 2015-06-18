@@ -31,7 +31,7 @@ def rot_center(image, angle):
 # currently image is name of file
 class Ship(pygame.sprite.Sprite):
     def __init__(self, pos, vel, angle):
-        pygame.sprite.Sprite.__init__(self)#
+        pygame.sprite.Sprite.__init__(self,self.groups)#
         self.pos = [pos[0],pos[1]]
         self.vel = [vel[0],vel[1]]
         self.angle = angle
@@ -41,7 +41,10 @@ class Ship(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         #x,y coordinates used for determing what the forward direction is
         self.forward = [0,0]
-        self.radius = 20
+        self.radius = 22.5
+        self.score = 0
+        self.lives = 3
+        self.invincible = False
     
     def get_position(self):
         return (self.pos[0],self.pos[1])
@@ -63,7 +66,7 @@ class Ship(pygame.sprite.Sprite):
  
     def update(self,size):
         #added a friction element so ship will stop moving if key is not pressed.
-        acc = 0.5
+        acc = 0.35
         fric = acc / 20
         
         self.angle += self.angle_vel
@@ -89,6 +92,30 @@ class Ship(pygame.sprite.Sprite):
     def get_radius(self):
         return self.radius
 
+    def get_score(self):
+        return self.score
+
+    def get_lives(self):
+        return self.lives
+
+    def death(self):
+        self.lives -= 1
+        self.invincible = True
+        if self.lives == 0:
+            return True
+        else:
+            return False
+
+    def toggle_invincible(self):
+        if self.invincible == True:
+            self.invincible = False
+        else:
+            self.invincible = True
+
+    def check_invincible(self):
+        return self.invincible
+
+
     def checkCollision(self,asteroid_center, asteroid_location):
         pass
 
@@ -111,3 +138,9 @@ class Ship(pygame.sprite.Sprite):
             self.set_angle_vel(0)
         if event.key == pygame.K_UP:
             self.set_thrust(False)
+
+    def update_score(self):
+        self.score += 10
+
+    def get_score(self):
+        return self.score
