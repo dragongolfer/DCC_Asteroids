@@ -2,14 +2,17 @@ import pygame
 import random
 import math
 
+#constant colors to use for screen display
 BLACK = (0,0,0)
 WHITE = (255,255,255)
-SIZE = (800,800)
+#SIZE = (800,800)
 
+#initialize pygame to use sounds for ship class
 pygame.init()
 ship_thrust_sound = pygame.mixer.Sound("Graphics_Assets\go_thrust.ogg")
 ship_missile_sound = pygame.mixer.Sound("Graphics_Assets\missile.wav")
-#used for calculating forward direction based on angle provided
+
+#used for calculating forward direction based on angle(in radians) provided
 def angle_to_vector(ang):
     return [math.cos(ang), -math.sin(ang)]
  
@@ -29,23 +32,27 @@ def rot_center(image, angle):
     return rot_image
  
 # Ship class - child class of pygame sprite class
-# currently image is name of file
+# currently image here is not used
+# initialize variables used for ship on creation.
 class Ship(pygame.sprite.Sprite):
     def __init__(self, pos, vel, angle):
-        pygame.sprite.Sprite.__init__(self,self.groups)#
+        pygame.sprite.Sprite.__init__(self,self.groups)#groups used in case multiple ships are added
         self.pos = [pos[0],pos[1]]
         self.vel = [vel[0],vel[1]]
         self.angle = angle
         self.thrust = False
         self.angle_vel = 0
-        self.image = pygame.image.load("Graphics_Assets\ship_1.png")
+        self.image = pygame.image.load("Graphics_Assets\ship_1.png")#not used, just in case sprite groups are used
         self.rect = self.image.get_rect()
         #x,y coordinates used for determing what the forward direction is
         self.forward = [0,0]
+        #radius used for collision detection
         self.radius = 22.5
         self.score = 0
         self.lives = 3
+        #invincible used for initial spawn
         self.invincible = False
+        #counter used to know how long ship is invincible
         self.time_counter = 0
     
     def get_position(self):
@@ -54,7 +61,7 @@ class Ship(pygame.sprite.Sprite):
     def get_angle(self):
         return self.angle
 
-    #sets thrust to true if up arrow is pressed.
+    #sets thrust to true if up arrow is pressed and plays sound.
     def set_thrust(self, thrust):
         self.thrust = thrust
         if self.thrust == True:
@@ -62,39 +69,47 @@ class Ship(pygame.sprite.Sprite):
         else:
             ship_thrust_sound.stop()
 
+    #returns true for bullet creation and plays sound.
     def shoot(self):
         ship_missile_sound.set_volume(.5)
         ship_missile_sound.play()
-
         return True
 
+    #draw not used. Here just in case display function wanted to reference this.
     #color value is used to set the background color of the image to black so the background image is transparent.
     def draw(self,screen):
         self.image.set_colorkey(BLACK)
         screen.blit(rot_center(self.image, self.angle),self.pos)
  
+    #on screen refresh, ship position is updated.
     def update(self,size):
         #added a friction element so ship will stop moving if key is not pressed.
+        #larger acceleration, faster the ship will move
         acc = 0.2
         fric = acc / 18
         
+        #ship rotation angle for forward direction
         self.angle += self.angle_vel
- 
+        
+        #calculates direction ship should be facing
         self.forward = angle_to_vector(math.radians(self.angle))
  
+        #accelerates ship in the forward direction
         if self.thrust:
             self.vel[0] += self.forward[0] * acc
             self.vel[1] += self.forward[1] * acc
  
+        #applies friction to velocity of ship to slow down ship when thrust isn't applied.
         self.vel[0] *= (1 - fric)
         self.vel[1] *= (1 - fric)
  
-        # update position, right now my screen dimensions are 
+        # update positions for each update. self.rect.x & y used in case sprite collision detection is used.
         self.pos[0] = (self.pos[0] + self.vel[0]) % (size[0])
         self.pos[1] = (self.pos[1] + self.vel[1]) % (size[1])
         self.rect.x = self.pos[0]
         self.rect.y = self.pos[1]
 
+        #counter value decremented and when it hits zero invincible is set to False.
         if self.time_counter > 0:
             self.time_counter -= 1
         else:
@@ -103,6 +118,7 @@ class Ship(pygame.sprite.Sprite):
     def set_angle_vel(self, vel):
         self.angle_vel = vel
 
+    #used for collision detection
     def get_radius(self):
         return self.radius
 
@@ -112,6 +128,7 @@ class Ship(pygame.sprite.Sprite):
     def get_lives(self):
         return self.lives
 
+    # removes life and sets invincible to True. Sets counter to 300.
     def death(self):
         self.lives -= 1
         self.invincible = True
@@ -131,7 +148,7 @@ class Ship(pygame.sprite.Sprite):
     def get_invincible(self):
         return self.invincible
 
-
+    #not used now, can be used in future version.
     def checkCollision(self,asteroid_center, asteroid_location):
         pass
 
