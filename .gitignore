@@ -3,6 +3,10 @@ __pycache__/
 *.py[cod]
 # C extensions
 *.so
+fuckintest.py
+bEtTeR fUcKiNg TeSt.py
+PydevCodeAnalysisIgnore.py
+
 
 # Distribution / packaging
 .Python
