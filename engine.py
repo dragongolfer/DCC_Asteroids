@@ -34,8 +34,11 @@ def debug(message):
     if DEBUG:
         print("DEBUG: " + str(message))
     return DEBUG
-    
 
+#add background music
+pygame.mixer.music.load('Graphics_Assets/space1.ogg')
+pygame.mixer.music.set_endevent(pygame.constants.USEREVENT)
+pygame.mixer.music.play()
 
 
 # Single Round of the main game loop    
@@ -62,6 +65,13 @@ def main(ship, asteroidGroup, explosionGroup, screen, lives, size):
                     isShoot = ship.keydown(event)
                 elif event.type == pygame.KEYUP:
                     isShoot = ship.keyup(event)
+                elif event.type == pygame.constants.USEREVENT:
+            # This event is triggered when the song stops playing.
+            # Next, song then plays
+                    pygame.mixer.music.load('Graphics_Assets/fly.ogg')
+                    pygame.mixer.music.play()
+                if isShoot:
+                    Bullet(ship.get_position(), ship.get_angle())
                 if isShoot:
                     Bullet(ship.get_position(), ship.get_angle())
         else:
