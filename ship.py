@@ -45,6 +45,7 @@ class Ship(pygame.sprite.Sprite):
         self.score = 0
         self.lives = 3
         self.invincible = False
+        self.time_counter = 0
     
     def get_position(self):
         return (self.pos[0],self.pos[1])
@@ -66,7 +67,7 @@ class Ship(pygame.sprite.Sprite):
  
     def update(self,size):
         #added a friction element so ship will stop moving if key is not pressed.
-        acc = 0.35
+        acc = 0.2
         fric = acc / 20
         
         self.angle += self.angle_vel
@@ -86,6 +87,11 @@ class Ship(pygame.sprite.Sprite):
         self.rect.x = self.pos[0]
         self.rect.y = self.pos[1]
 
+        if self.time_counter > 0:
+            self.time_counter -= 1
+        else:
+            self.invincible = False
+
     def set_angle_vel(self, vel):
         self.angle_vel = vel
 
@@ -101,9 +107,11 @@ class Ship(pygame.sprite.Sprite):
     def death(self):
         self.lives -= 1
         self.invincible = True
-        if self.lives == 0:
+        if self.lives <= 0:
+            self.lives = 0
             return True
         else:
+            self.time_counter = 300
             return False
 
     def toggle_invincible(self):
@@ -112,7 +120,7 @@ class Ship(pygame.sprite.Sprite):
         else:
             self.invincible = True
 
-    def check_invincible(self):
+    def get_invincible(self):
         return self.invincible
 
 
@@ -140,7 +148,7 @@ class Ship(pygame.sprite.Sprite):
             self.set_thrust(False)
 
     def update_score(self):
-        self.score += 10
+        self.score += 100
 
     def get_score(self):
         return self.score
