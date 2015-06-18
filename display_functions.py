@@ -7,27 +7,6 @@ from AsteroidClass import *
 
 pygame.init()
 
-'''
-#TESTING CLASSES
-class Ship():
-    def __init__(self):
-        self.pos = [100, 100]
-        self.angle = 230
-
-    def get_position(self):
-        return self.pos
-
-    def get_angle(self):
-        return self.angle
-
-class Asteroid():
-    def __init__(self, id, locX, locY):
-        self.id = id
-        self.location = [locX, locY]
-
-    def get_location(self):
-        return self.location
-'''
 
 def setScreenSize(x, y):
     size = x, y
@@ -124,8 +103,8 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, gameScreen, size):
 
     #SET BACKGROUND
     bgImage = pygame.image.load("Graphics_Assets\star_ground_2.png")
-    backGround = pygame.transform.scale(bgImage, (size))
-    gameScreen.blit(backGround, (0,0))
+    background = pygame.transform.scale(bgImage, (size))
+    gameScreen.blit(background, (0,0))
     
     #SET SHIP
     shipImg = pygame.image.load("Graphics_Assets\ship_1.png")
@@ -162,12 +141,12 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, gameScreen, size):
     #Asteroid v Ship
     print ship.get_lives()
     
-    #if ship.get_invincible() == False:
-    for asteroid in asteroidGroup:
-        c = collision(ship.get_position(), asteroid.get_location(), ship.get_radius(), asteroid.get_radius())
-        if c == True:
-            ship.death()
-            print ship.get_lives()  
+    if ship.get_invincible() == False:
+        for asteroid in asteroidGroup:
+            c = collision(ship.get_position(), asteroid.get_location(), ship.get_radius(), asteroid.get_radius())
+            if c == True:
+                ship.death()
+                print ship.get_lives()  
 
 
     #Bullet v Asteroid
@@ -176,54 +155,48 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, gameScreen, size):
             c = collision(asteroid.get_location(), bullet.get_location(), asteroid.get_radius(), bullet.get_radius())
             if c == True:
                 bulletGroup.remove(bullet)
+                #asteroid.make_small_asteroid()
                 asteroidGroup.remove(asteroid)
 
-
-    #SCORING
-    #font = pygame.font.Font(None, 100)
-    #asteroidText = font.render("ASTEROIDS", 1, (255,255,255), (0,0,0))
-    #asteroidTextPos = asteroidText.get_rect()
-    #asteroidTextPos.centerx = background.get_rect().centerx
-    #asteroidTextPos.centery = (background.get_rect().centery - 50)
+                ship.update_score()
 
     
-    '''
-    #COLLISION
-    #Set Asteroids
-    asteroids = objectList[1:]
-    for a in asteroids:
-        aImg = pygame.image.load("Graphics_Assets\meteor_retro_3.png")
-        aLoc = a.get_location()
-        a.rect = aImg.get_rect()
-        a.rect.x = a.x
-        a.rect.y = a.y
-        gameScreen.blit(aImg, (aLoc))
 
-    asteroid_list = list(objectList[1:])
-    for asteroid in asteroid_list:
-            if pygame.sprite.collide_rect(ship,asteroid):
-                objectList.remove(asteroid)
-    '''
+
+    size = setScreenSize(800, 800)
+    #SCORING
+    score = ship.get_score()
+    font = pygame.font.Font(None, 50)
+    scoreText = font.render("Score: " + str(score), 1, (255,255,255), (0,0,0))
+    scoreTextPos = (10,10)
+
+    gameScreen.blit(scoreText, scoreTextPos)
+
+    #LIVES
+    lives = ship.get_lives()
+    font = pygame.font.Font(None, 25)
+    livesText = font.render("Lives: " + str(lives), 1, (255,255,255), (0,0,0))
+    livesTextPos = ((size[0] - 100), (size[1] - 790))
+    
+    gameScreen.blit(livesText, livesTextPos)
+
+    if ship.get_lives() <= 0:
+        #GAME OVER
+        # Setup "GAME OVER" Title
+        font = pygame.font.Font(None, 100)
+        gameOverText = font.render("GAME OVER", 1, (255,255,255), (0,0,0))
+        gameOverTextPos = gameOverText.get_rect()
+        gameOverTextPos.centerx = background.get_rect().centerx
+        gameOverTextPos.centery = (background.get_rect().centery - 50)
+    
+        # Blit Screen
+        gameScreen.blit(gameOverText, gameOverTextPos)
+      
+
 
     #DISPLAY UPDATE
     pygame.display.update() 
 
 
-'''    
-#TESTING PURPOSES
-s = Ship()
-objectList = [s]
 
 
-for a in range(10):
-    locX = randint(10,290)
-    locY = randint(10,290)
-    
-    asteroid = Asteroid(a, locX, locY)
-    objectList.append(asteroid)
-
-
-gameScreen = pygame.display.set_mode((300, 300))
-while True:
-    displayGameScreen(objectList, gameScreen)
-'''
