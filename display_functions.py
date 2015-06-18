@@ -162,12 +162,12 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, gameScreen, size):
     #Asteroid v Ship
     print ship.get_lives()
     
-    if ship.get_invincible() == False:
-        for asteroid in asteroidGroup:
+    #if ship.get_invincible() == False:
+    for asteroid in asteroidGroup:
         c = collision(ship.get_position(), asteroid.get_location(), ship.get_radius(), asteroid.get_radius())
-            if c == True:
-                ship.death()
-                print ship.get_lives()  
+        if c == True:
+            ship.death()
+            print ship.get_lives()  
 
 
     #Bullet v Asteroid
@@ -180,11 +180,11 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, gameScreen, size):
 
 
     #SCORING
-    font = pygame.font.Font(None, 100)
-    asteroidText = font.render("ASTEROIDS", 1, (255,255,255), (0,0,0))
-    asteroidTextPos = asteroidText.get_rect()
-    asteroidTextPos.centerx = background.get_rect().centerx
-    asteroidTextPos.centery = (background.get_rect().centery - 50)
+    #font = pygame.font.Font(None, 100)
+    #asteroidText = font.render("ASTEROIDS", 1, (255,255,255), (0,0,0))
+    #asteroidTextPos = asteroidText.get_rect()
+    #asteroidTextPos.centerx = background.get_rect().centerx
+    #asteroidTextPos.centery = (background.get_rect().centery - 50)
 
     
     '''
