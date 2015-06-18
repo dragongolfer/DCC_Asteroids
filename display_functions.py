@@ -5,6 +5,7 @@ import math
 from pygame.locals import *
 from AsteroidClass import *
 from explosionClass import *
+from HighScoreControl import *
 
 pygame.init()
 
@@ -218,19 +219,44 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, gameScre
     gameScreen.blit(livesText, livesTextPos)
 
 
+
+
+
+
     if ship.get_lives() <= 0:
         #GAME OVER
-    
-        # Setup "GAME OVER" Title
         font = pygame.font.Font(None, 100)
-        gameOverText = font.render("GAME OVER", 1, (255,255,255), (0,0,0))
+        gameOverText = font.render("GAME OVER", 1, (255,255,255))#, (0,0,0))
         gameOverTextPos = gameOverText.get_rect()
         gameOverTextPos.centerx = background.get_rect().centerx
         gameOverTextPos.centery = background.get_rect().centery
     
         # Blit Screen
         gameScreen.blit(gameOverText, gameOverTextPos)
-      
+
+
+        #PRESS KEY TO CONTINUE
+        font = pygame.font.Font(None, 33)
+        contText = font.render("press any key to continue", 1, (255,255,255))#, (0,0,0))
+        contTextPos = contText.get_rect()
+        contTextPos.centerx = background.get_rect().centerx
+        contTextPos.centery = background.get_rect().centery + 50
+
+        #Blit Screen
+        gameScreen.blit(contText, contTextPos)
+
+
+        
+        #HIGH SCORES
+        font = pygame.font.Font(None, 66)
+        contText = font.render("High Scores", 1, (255,255,255))#, (0,0,0))
+        contTextPos = contText.get_rect()
+        contTextPos.centerx = background.get_rect().centerx
+        contTextPos.centery = background.get_rect().centery + 100
+
+        #Blit Screen
+        gameScreen.blit(contText, contTextPos)
+        
 
 
     #DISPLAY UPDATE
