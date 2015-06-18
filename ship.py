@@ -54,6 +54,8 @@ class Ship(pygame.sprite.Sprite):
         self.invincible = False
         #counter used to know how long ship is invincible
         self.time_counter = 0
+        self.shield_counter = 0
+        self.shield = False
     
     def get_position(self):
         return (self.pos[0],self.pos[1])
@@ -115,6 +117,11 @@ class Ship(pygame.sprite.Sprite):
         else:
             self.invincible = False
 
+        if self.shield_counter > 0:
+            self.shield_counter -= 1
+        else:
+            self.shield = False
+
     def set_angle_vel(self, vel):
         self.angle_vel = vel
 
@@ -147,6 +154,17 @@ class Ship(pygame.sprite.Sprite):
 
     def get_invincible(self):
         return self.invincible
+
+    def activate_shield(self):
+        self.shield = True
+        self.shield_counter = 600
+
+    def deactivate_shield(self):
+        self.shield = False
+        self.shield_counter = 0
+
+    def get_shield(self):
+        return self.shield
 
     #not used now, can be used in future version.
     def checkCollision(self,asteroid_center, asteroid_location):
