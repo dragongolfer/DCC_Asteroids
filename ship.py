@@ -8,7 +8,7 @@ SIZE = (800,800)
 
 pygame.init()
 ship_thrust_sound = pygame.mixer.Sound("Graphics_Assets\go_thrust.ogg")
-
+ship_missile_sound = pygame.mixer.Sound("Graphics_Assets\missile.wav")
 #used for calculating forward direction based on angle provided
 def angle_to_vector(ang):
     return [math.cos(ang), -math.sin(ang)]
@@ -42,7 +42,7 @@ class Ship(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         #x,y coordinates used for determing what the forward direction is
         self.forward = [0,0]
-        self.radius = 25
+        self.radius = 22.5
         self.score = 0
         self.lives = 3
         self.invincible = False
@@ -57,13 +57,13 @@ class Ship(pygame.sprite.Sprite):
     #sets thrust to true if up arrow is pressed.
     def set_thrust(self, thrust):
         self.thrust = thrust
-        print self.thrust
         if self.thrust == True:
             ship_thrust_sound.play()
         else:
             ship_thrust_sound.stop()
 
     def shoot(self):
+        ship_missile_sound.play()
         return True
 
     #color value is used to set the background color of the image to black so the background image is transparent.
