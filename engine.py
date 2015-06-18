@@ -66,13 +66,13 @@ def main(ship, asteroidGroup, explosionGroup, screen, lives, size):
                     Bullet(ship.get_position(), ship.get_angle())
         else:
             debug("END OF GAME DAMNIT!")
-            endOfGamePause += 1
-            if endOfGamePause > 180:
-                for event in pygame.event.get():#user does something
-                    if event.type == pygame.QUIT:
-                        pygame.quit()
-                        sys.exit()
-                    elif event.type == pygame.KEYDOWN:
+            endOfGamePause += 1 
+            for event in pygame.event.get():#user does something
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                elif event.type == pygame.KEYDOWN:
+                    if endOfGamePause > 180:
                         return True
             
         
