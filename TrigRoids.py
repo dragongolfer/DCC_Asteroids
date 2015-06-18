@@ -54,6 +54,18 @@ class Asteroid(pygame.sprite.Sprite):
             self.y_axis = self.y_axis + 800
         return
 
+    def make_small_asteroids(self):
+    smallAsteroid = Asteroid()
+    smallAsteroid.radius = 5
+    smallAsteroid.x_axis = self.x_axis
+    smallAsteroid.y_axis = self.y_axis
+    smallAsteroid2 = Asteroid()
+    smallAsteroid2.radius = 5
+    smallAsteroid2.x_axis = self.x_axis
+    smallAsteroid2.y_axis = self.y_axis
+    return
+
+
 
 def rot_center(image, angle):
     '''rotate an image while keeping its center and size'''
@@ -91,13 +103,13 @@ def spawn_asteroids():
             #screen.blit(lone_asteroid.image, asteroid_position)
             if math.sqrt((lone_asteroid1.x_axis - lone_asteroid2.x_axis)**2 + (lone_asteroid1.y_axis - lone_asteroid2.y_axis)**2) < 20:#pygame.sprite.collide_circle(lone_asteroid1, lone_asteroid2):#this is for collision detection
                 #asteroid_list.remove(lone_asteroid1)
-                print "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-                print "You had an accident"
+                #print "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+                #print "You had an accident"
             else:
                 print "Things are fine"
-            print "Radii", lone_asteroid1.radius, lone_asteroid2.radius
-            print "Locale:", lone_asteroid1.get_location(), lone_asteroid2.get_location()
-            print "Distance:", math.sqrt((lone_asteroid1.x_axis - lone_asteroid2.x_axis)**2 + (lone_asteroid1.y_axis - lone_asteroid2.y_axis)**2)
+            #print "Radii", lone_asteroid1.radius, lone_asteroid2.radius
+            #print "Locale:", lone_asteroid1.get_location(), lone_asteroid2.get_location()
+            #print "Distance:", math.sqrt((lone_asteroid1.x_axis - lone_asteroid2.x_axis)**2 + (lone_asteroid1.y_axis - lone_asteroid2.y_axis)**2)
             
             #continue
         #if (coll_x in range(lone_asteroid.x_axis - lone_asteroid.angle, lone_asteroid.x_axis + lone_asteroid.angle) and coll_y in range(lone_asteroid.y_axis - lone_asteroid.angle, lone_asteroid.y_axis + lone_asteroid.angle)):
