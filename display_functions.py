@@ -121,7 +121,7 @@ def collision(obj_1_Loc, obj_2_Loc, obj_1_Rad, obj_2_Rad):
 
 def displayGameScreen(ship, asteroidGroup, bulletGroup, gameScreen, size):
     #pygame.display.set_caption(str(clock.get_fps()))
-    
+
     #SET BACKGROUND
     bgImage = pygame.image.load("Graphics_Assets\star_ground_2.png")
     backGround = pygame.transform.scale(bgImage, (size))
@@ -161,15 +161,15 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, gameScreen, size):
     #COLLISION CHECK
     #Asteroid v Ship
     print ship.get_lives()
-    for asteroid in asteroidGroup:
-        if ship.get_invincible() == False:
-            c = collision(ship.get_position(), asteroid.get_location(), ship.get_radius(), asteroid.get_radius())
+    
+    if ship.get_invincible() == False:
+        for asteroid in asteroidGroup:
+        c = collision(ship.get_position(), asteroid.get_location(), ship.get_radius(), asteroid.get_radius())
             if c == True:
                 ship.death()
-                print ship.get_lives()
-                
+                print ship.get_lives()  
 
-            
+
     #Bullet v Asteroid
     for asteroid in asteroidGroup:
         for bullet in bulletGroup:
@@ -177,6 +177,15 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, gameScreen, size):
             if c == True:
                 bulletGroup.remove(bullet)
                 asteroidGroup.remove(asteroid)
+
+
+    #SCORING
+    font = pygame.font.Font(None, 100)
+    asteroidText = font.render("ASTEROIDS", 1, (255,255,255), (0,0,0))
+    asteroidTextPos = asteroidText.get_rect()
+    asteroidTextPos.centerx = background.get_rect().centerx
+    asteroidTextPos.centery = (background.get_rect().centery - 50)
+
     
     '''
     #COLLISION
