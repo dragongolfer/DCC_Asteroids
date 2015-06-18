@@ -41,7 +41,7 @@ class Ship(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         #x,y coordinates used for determing what the forward direction is
         self.forward = [0,0]
-        self.radius = 22.5
+        self.radius = 25
         self.score = 0
         self.lives = 3
         self.invincible = False
