@@ -29,6 +29,7 @@ class Asteroid(pygame.sprite.Sprite):
         self.x_axis += self.angluar_momentum * math.cos(math.radians(self.angle))#uses trig functions to derive the proper
         self.y_axis -= self.angluar_momentum * math.sin(math.radians(self.angle))#movement along a 2D plane for the asteroid
         self.angle_of_rotation += self.angular_velocity
+        self.angle += random.randrange(-10,10)
         if self.x_axis > size[0]: #if x axis is greater than screen size then adjust the x axis
             self.x_axis = self.x_axis - size[0]
         if self.x_axis < 0:

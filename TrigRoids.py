@@ -55,15 +55,15 @@ class Asteroid(pygame.sprite.Sprite):
         return
 
     def make_small_asteroids(self):
-    smallAsteroid = Asteroid()
-    smallAsteroid.radius = 5
-    smallAsteroid.x_axis = self.x_axis
-    smallAsteroid.y_axis = self.y_axis
-    smallAsteroid2 = Asteroid()
-    smallAsteroid2.radius = 5
-    smallAsteroid2.x_axis = self.x_axis
-    smallAsteroid2.y_axis = self.y_axis
-    return
+        smallAsteroid = Asteroid()
+        smallAsteroid.radius = 5
+        smallAsteroid.x_axis = self.x_axis
+        smallAsteroid.y_axis = self.y_axis
+        smallAsteroid2 = Asteroid()
+        smallAsteroid2.radius = 5
+        smallAsteroid2.x_axis = self.x_axis
+        smallAsteroid2.y_axis = self.y_axis
+        return
 
 
 
@@ -104,7 +104,7 @@ def spawn_asteroids():
             if math.sqrt((lone_asteroid1.x_axis - lone_asteroid2.x_axis)**2 + (lone_asteroid1.y_axis - lone_asteroid2.y_axis)**2) < 20:#pygame.sprite.collide_circle(lone_asteroid1, lone_asteroid2):#this is for collision detection
                 #asteroid_list.remove(lone_asteroid1)
                 #print "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-                #print "You had an accident"
+                print "You had an accident"
             else:
                 print "Things are fine"
             #print "Radii", lone_asteroid1.radius, lone_asteroid2.radius
