@@ -107,7 +107,7 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, gameScre
     background = pygame.transform.scale(bgImage, (size))
     gameScreen.blit(background, (0,0))
     
-    #SET SHIP
+    #SHIP BLIT
     if ship.get_invincible() == False:
         shipImg = pygame.image.load("Graphics_Assets\ship_1.png")
     else:
@@ -121,7 +121,7 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, gameScre
     if ship.get_lives() > 0:
         gameScreen.blit(rotShip, (shipLoc))
     
-
+    #ASTEROID BLIT
     for each in asteroidGroup:
         rad = each.get_radius()
         if rad == 15:
@@ -131,13 +131,14 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, gameScre
         aLoc = each.get_location()
         gameScreen.blit(aImg, (aLoc))
 
+    #BULLET BLIT
     for each in bulletGroup:
         bImg = pygame.image.load("Graphics_Assets\laser.png")
         bLoc = each.get_location()
         bAngle = each.get_angle()
         rotBullet = rot_center(bImg, bAngle)
 
-        #REMOVE BULLETS
+        #Remove Bullets
         if (bLoc[0] < 0) or (bLoc[0] > size[0]):
             bulletGroup.remove(each)
 
@@ -145,6 +146,22 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, gameScre
             bulletGroup.remove(each)
 
         gameScreen.blit(rotBullet, (bLoc))
+
+
+    #EXPLOSION BLIT
+    for each in explosionGroup:
+        expImgNum = each.get_image_number()
+        if expImgNum == 4:
+            expImg = pygame.image.load("Graphics_Assets\exp_1.png")
+        if expImgNum == 3:
+            expImg = pygame.image.load("Graphics_Assets\exp_2.png")
+        if expImgNum == 2:
+            expImg = pygame.image.load("Graphics_Assets\exp_3.png")
+        if expImgNum == 1:
+            expImg = pygame.image.load("Graphics_Assets\exp_4.png")
+
+        
+        gameScreen.blit(expImg, each.get_location())
 
 
     #COLLISION CHECK
@@ -164,6 +181,8 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, gameScre
                 bulletGroup.remove(bullet)
                 asteroid.make_small_asteroids()
                 asteroidGroup.remove(asteroid)
+
+                Explosion(asteroid.get_location(), 4, 0.5, 60)
 
                 ship.update_score()
 

@@ -23,7 +23,7 @@ class Explosion(pygame.sprite.Sprite):
         return (int(self.x), int(self.y))
 
     def get_image_number(self):
-        return self.counter / self.image_increment
+        return int(self.counter / self.image_increment) + 1
         
     def get_counter(self):
         return self.counter
