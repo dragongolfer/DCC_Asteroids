@@ -100,6 +100,30 @@ def collision(obj_1_Loc, obj_2_Loc, obj_1_Rad, obj_2_Rad):
         collision = True
     return collision
 
+def highScoreBlit(highScore, index, gameScreen, background):
+    scoreList = readHighScoresFromFile()
+    highScore = scoreList[index]
+    font = pygame.font.Font(None, 33)
+    text = font.render(str(highScore[0]) + " " + str(highScore[1]), 1, (255,255,255))#, (0,0,0))
+    textPos = text.get_rect()
+    textPos.centerx = background.get_rect().centerx
+    if index == 0:
+        textPos.centery = background.get_rect().centery + 30
+        gameScreen.blit(text, textPos)
+    elif index == 1:
+        textPos.centery = background.get_rect().centery + 55
+        gameScreen.blit(text, textPos)
+    elif index == 2:
+        textPos.centery = background.get_rect().centery + 80
+        gameScreen.blit(text, textPos)
+    elif index == 3:
+        textPos.centery = background.get_rect().centery + 105
+        gameScreen.blit(text, textPos)
+    elif index == 4:
+        textPos.centery = background.get_rect().centery + 130
+        gameScreen.blit(text, textPos)
+    return
+
 def displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, gameScreen, size):
     #pygame.display.set_caption(str(clock.get_fps()))
 
@@ -218,45 +242,83 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, gameScre
     
     gameScreen.blit(livesText, livesTextPos)
 
-
-
-
-
-
+    
+    #GAME OVER
     if ship.get_lives() <= 0:
-        #GAME OVER
+        #Game Over Text
         font = pygame.font.Font(None, 100)
         gameOverText = font.render("GAME OVER", 1, (255,255,255))#, (0,0,0))
         gameOverTextPos = gameOverText.get_rect()
         gameOverTextPos.centerx = background.get_rect().centerx
-        gameOverTextPos.centery = background.get_rect().centery
+        gameOverTextPos.centery = background.get_rect().centery - 130
     
         # Blit Screen
         gameScreen.blit(gameOverText, gameOverTextPos)
 
 
-        #PRESS KEY TO CONTINUE
+        #Press Key to Continue
         font = pygame.font.Font(None, 33)
         contText = font.render("press any key to continue", 1, (255,255,255))#, (0,0,0))
         contTextPos = contText.get_rect()
         contTextPos.centerx = background.get_rect().centerx
-        contTextPos.centery = background.get_rect().centery + 50
+        contTextPos.centery = background.get_rect().centery - 80
 
         #Blit Screen
         gameScreen.blit(contText, contTextPos)
 
+        #Call High Score File
+        scoreList = readHighScoresFromFile()
+        if ship.get_score_recorded() == False:
+            finalScore = ship.get_score()
+            insertHighScore(scoreList, "Ace", finalScore)
+            saveHighScoresToFile(scoreList)
+            ship.set_score_recorded(True)
+        else:
+            print scoreList
 
-        
+
         #HIGH SCORES
-        font = pygame.font.Font(None, 66)
-        contText = font.render("High Scores", 1, (255,255,255))#, (0,0,0))
-        contTextPos = contText.get_rect()
-        contTextPos.centerx = background.get_rect().centerx
-        contTextPos.centery = background.get_rect().centery + 100
+        font = pygame.font.Font(None, 50)
+        HStext = font.render("HIGH SCORES", 1, (255,255,255))#, (0,0,0))
+        HStextPos = HStext.get_rect()
+        HStextPos.centerx = background.get_rect().centerx
+        HStextPos.centery = background.get_rect().centery - 5
 
         #Blit Screen
-        gameScreen.blit(contText, contTextPos)
+        gameScreen.blit(HStext, HStextPos)
         
+        #Individual Scores
+        highScore1 = scoreList[0]
+        highScore2 = scoreList[1]
+        highScore3 = scoreList[2]
+        highScore4 = scoreList[3]
+        highScore5 = scoreList[4]
+
+        highScoreBlit(highScore1, 0, gameScreen, background)
+        highScoreBlit(highScore2, 1, gameScreen, background)
+        highScoreBlit(highScore3, 2, gameScreen, background)
+        highScoreBlit(highScore4, 3, gameScreen, background)
+        highScoreBlit(highScore5, 4, gameScreen, background)
+
+
+        
+
+
+
+
+        
+
+
+        '''
+        highScore1 = scoreList[0]
+        font = pygame.font.Font(None, 33)
+        text = font.render(str(highScore1[0]) + " " + str(highScore1[1]), 1, (255,255,255))#, (0,0,0))
+        textPos = text.get_rect()
+        textPos.centerx = background.get_rect().centerx
+        textPos.centery = background.get_rect().centery + 150
+
+        gameScreen.blit(text, textPos)
+        '''
 
 
     #DISPLAY UPDATE

@@ -32,7 +32,7 @@ def insertHighScore(scoreList, name, score):
     else:
         scoreList.append([name,score])
         
-    while len(scoreList) > 10:
+    while len(scoreList) > 5:
         scoreList.pop(-1)
     return
 

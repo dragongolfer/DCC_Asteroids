@@ -1,2 +1,5 @@
-ACE 1000
-BOB 500
+Ace 6000
+Ace 5600
+Ace 5400
+Ace 4600
+Ace 4000
