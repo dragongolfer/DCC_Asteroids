@@ -45,11 +45,7 @@ def main(ship, asteroidGroup, screen, lives, size):
 
     while not endOfRound:
         # 60 Framse per second
-<<<<<<< HEAD
-        #os.system('cls')
-=======
         if debug(""): os.system('cls')
->>>>>>> 39fbf84473487759eefcae58f2fa287a831383e9
         clock.tick(60) # Game will render at 60 frames per second
     
         # Process User Inputs
@@ -72,18 +68,11 @@ def main(ship, asteroidGroup, screen, lives, size):
         ship.update(size)
         for each in asteroidGroup:
             each.update(size)
-<<<<<<< HEAD
             debug(("Ast" +str(each.get_location())))
         for each in bulletGroup:
             each.update(size)
             debug(("Bul" + str(each.get_location())))
-=======
-            debug("Ast" + str(each.get_location()))
-        for each in bulletGroup:
-            each.update(size)
-            debug("Bul" + str(each.get_location()))
->>>>>>> 39fbf84473487759eefcae58f2fa287a831383e9
-
+           
         # Process Collision Detect
         debug("STARTING COLLISION DETECT")
         ###### Add Collision detect here.
