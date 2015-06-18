@@ -4,6 +4,7 @@ import sys
 import math
 from pygame.locals import *
 from AsteroidClass import *
+from explosionClass import *
 
 pygame.init()
 
@@ -98,7 +99,7 @@ def collision(obj_1_Loc, obj_2_Loc, obj_1_Rad, obj_2_Rad):
         collision = True
     return collision
 
-def displayGameScreen(ship, asteroidGroup, bulletGroup, gameScreen, size):
+def displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, gameScreen, size):
     #pygame.display.set_caption(str(clock.get_fps()))
 
     #SET BACKGROUND
