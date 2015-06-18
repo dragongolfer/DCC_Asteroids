@@ -164,7 +164,7 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, gameScreen, size):
             c = collision(asteroid.get_location(), bullet.get_location(), asteroid.get_radius(), bullet.get_radius())
             if c == True:
                 bulletGroup.remove(bullet)
-                asteroid.make_small_asteroids()
+                asteroid.make_small_asteroids()#method call to spawn small asteroids, the image size needs to be adjusted still
                 asteroidGroup.remove(asteroid)
     
     '''
