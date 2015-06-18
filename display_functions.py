@@ -109,15 +109,19 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, gameScre
     
     #SHIP BLIT
     if ship.get_invincible() == False:
-        shipImg = pygame.image.load("Graphics_Assets\ship_1.png")
+        if ship.get_thrust() == True:
+            shipImg = pygame.image.load("Graphics_Assets\ship_1_thrust.png")
+        else:
+            shipImg = pygame.image.load("Graphics_Assets\ship_1.png")
     else:
-        shipImg = pygame.image.load("Graphics_Assets\ship_1_ghost.png")
+        if ship.get_thrust() == True:
+            shipImg = pygame.image.load("Graphics_Assets\ship_1_thrust_ghost.png")
+        else:
+            shipImg = pygame.image.load("Graphics_Assets\ship_1_ghost.png")
     shipLoc = ship.get_position()
     shipAngle = ship.get_angle()
     rotShip = rot_center(shipImg, shipAngle)
-
-    shipImg.set_colorkey((0,0,0))
-
+    
     if ship.get_lives() > 0:
         gameScreen.blit(rotShip, (shipLoc))
     
@@ -129,7 +133,14 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, gameScre
         elif rad == 30:
             aImg = pygame.image.load("Graphics_Assets\meteor_retro_2.png")
         aLoc = each.get_location()
-        gameScreen.blit(aImg, (aLoc))
+        aAngle = each.get_angle()
+        rotAstr = rot_center(aImg, aAngle)
+
+        gameScreen.blit(rotAstr, (aLoc))
+
+
+
+
 
     #BULLET BLIT
     for each in bulletGroup:
