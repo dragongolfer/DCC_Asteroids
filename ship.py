@@ -177,3 +177,6 @@ class Ship(pygame.sprite.Sprite):
 
     def get_score(self):
         return self.score
+
+    def get_thrust(self):
+        return self.thrust
