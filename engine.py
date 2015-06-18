@@ -29,7 +29,7 @@ pygame.init()
 
 
 def debug(message):
-    DEBUG = True
+    DEBUG = False
     if DEBUG:
         print("DEBUG: " + str(message))
     return
@@ -74,7 +74,7 @@ def main(ship, asteroidGroup, screen, lives, size):
 
     while not endOfRound:
         # 60 Framse per second
-        os.system('cls')
+        #os.system('cls')
         clock.tick(60) # Game will render at 60 frames per second
     
         # Process User Inputs
@@ -97,10 +97,10 @@ def main(ship, asteroidGroup, screen, lives, size):
         ship.update(size)
         for each in asteroidGroup:
             each.update(size)
-            print "Ast", each.get_location()
+            debug(("Ast" +str(each.get_location())))
         for each in bulletGroup:
             each.update(size)
-            print "Bul", each.get_location()
+            debug(("Bul" + str(each.get_location())))
 
         # Process Collision Detect
         debug("STARTING COLLISION DETECT")

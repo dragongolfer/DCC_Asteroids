@@ -38,3 +38,14 @@ class Asteroid(pygame.sprite.Sprite):
         if self.y_axis < 0:
             self.y_axis = self.y_axis + size[1]
         return
+
+    def make_small_asteroids(self):
+        smallAsteroid = Asteroid()
+        smallAsteroid.radius = 5
+        smallAsteroid.x_axis = self.x_axis
+        smallAsteroid.y_axis = self.y_axis
+        smallAsteroid2 = Asteroid()
+        smallAsteroid2.radius = 5
+        smallAsteroid2.x_axis = self.x_axis
+        smallAsteroid2.y_axis = self.y_axis
+        return
