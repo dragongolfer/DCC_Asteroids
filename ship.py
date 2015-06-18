@@ -37,6 +37,7 @@ def rot_center(image, angle):
 class Ship(pygame.sprite.Sprite):
     def __init__(self, pos, vel, angle):
         pygame.sprite.Sprite.__init__(self,self.groups)#groups used in case multiple ships are added
+        self.name = "Player"
         self.pos = [pos[0],pos[1]]
         self.vel = [vel[0],vel[1]]
         self.angle = angle
@@ -193,7 +194,6 @@ class Ship(pygame.sprite.Sprite):
 
     def update_score(self):
         self.score += 100
-        print "Update Score"
 
     def get_score(self):
         return self.score
@@ -206,4 +206,10 @@ class Ship(pygame.sprite.Sprite):
 
     def set_score_recorded(self,value):
         self.score_recorded = value
+
+    def set_name(self,name):
+        self.name = name
+
+    def get_name(self):
+        return self.name
 
