@@ -183,7 +183,7 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, gameScre
 
         gameScreen.blit(rotBullet, (bLoc))
 
-
+    
     #EXPLOSION BLIT
     for each in explosionGroup:
         expImgNum = each.get_image_number()
@@ -196,9 +196,8 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, gameScre
         if expImgNum == 1:
             expImg = pygame.image.load("Graphics_Assets\exp_4.png")
 
-        
         gameScreen.blit(expImg, each.get_location())
-
+    
 
     #COLLISION CHECK
     #Asteroid v Ship
@@ -206,6 +205,24 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, gameScre
         for asteroid in asteroidGroup:
             c = collision(ship.get_position(), asteroid.get_location(), ship.get_radius(), asteroid.get_radius())
             if c == True:
+                '''
+                Explosion(ship.get_position(), 4, 0.5, 60)
+
+                for each in explosionGroup:
+                    shipExpNum = each.get_image_number()
+                    if shipExpNum >= 4:
+                        shipExpImg = pygame.image.load("Graphics_Assets\ship_exp_1.png")
+                    if shipExpNum == 3:
+                        shipExpImg = pygame.image.load("Graphics_Assets\ship_exp_2.png")
+                    if shipExpNum == 2:
+                        shipExpImg = pygame.image.load("Graphics_Assets\ship_exp_3.png")
+                    if shipExpNum == 1:
+                        shipExpImg = pygame.image.load("Graphics_Assets\ship_exp_4.png")
+
+                    
+                    gameScreen.blit(shipExpImg, each.get_location())
+                '''
+
                 ship.death()
                
 
@@ -221,7 +238,7 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, gameScre
                 Explosion(asteroid.get_location(), 4, 0.5, 60)
 
                 ship.update_score()
-
+                
     
 
 
@@ -322,7 +339,7 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, gameScre
 
 
     #DISPLAY UPDATE
-    pygame.display.update() 
+    pygame.display.update()
 
 
 
