@@ -6,6 +6,7 @@ from pygame.locals import *
 from AsteroidClass import *
 from explosionClass import *
 from HighScoreControl import *
+from PlayerUp import *
 
 pygame.init()
 
@@ -124,7 +125,7 @@ def highScoreBlit(highScore, index, gameScreen, background):
         gameScreen.blit(text, textPos)
     return
 
-def displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, gameScreen, size):
+def displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, playerUpGroup, gameScreen, size):
     #pygame.display.set_caption(str(clock.get_fps()))
 
     #SET BACKGROUND
@@ -164,12 +165,20 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, gameScre
         gameScreen.blit(rotAstr, (aLoc))
 
 
-
+    #POWERUP BLIT
+    for each in playerUpGroup:
+        powerUpImg = pygame.image.load("Graphics_Assets\power_up_laser.bmp")
+        powerUpLoc = each.get_location()
+        gameScreen.blit(powerUpImg, powerUpLoc)
+        
 
 
     #BULLET BLIT
     for each in bulletGroup:
-        bImg = pygame.image.load("Graphics_Assets\laser.png")
+        if each.get_large() == False:
+            bImg = pygame.image.load("Graphics_Assets\laser.png")
+        else:
+            bImg = pygame.image.load("Graphics_Assets\laser_shield.png")
         bLoc = each.get_location()
         bAngle = each.get_angle()
         rotBullet = rot_center(bImg, bAngle)
@@ -185,34 +194,48 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, gameScre
 
     
     #EXPLOSION BLIT
-    #Original Asteroid Explosion
     for each in explosionGroup:
-        expImgNum = each.get_image_number()
-        if expImgNum == 4:
-            expImg = pygame.image.load("Graphics_Assets\exp_1.png")
-        if expImgNum == 3:
-            expImg = pygame.image.load("Graphics_Assets\exp_2.png")
-        if expImgNum == 2:
-            expImg = pygame.image.load("Graphics_Assets\exp_3.png")
-        if expImgNum == 1:
-            expImg = pygame.image.load("Graphics_Assets\exp_4.png")
+        #Asteroid
+        if each.get_name() == "asteroid":
+            expImgNum = each.get_image_number()
+            if expImgNum == 4:
+                expImg = pygame.image.load("Graphics_Assets\exp_1.png")
+            if expImgNum == 3:
+                expImg = pygame.image.load("Graphics_Assets\exp_2.png")
+            if expImgNum == 2:
+                expImg = pygame.image.load("Graphics_Assets\exp_3.png")
+            if expImgNum == 1:
+                expImg = pygame.image.load("Graphics_Assets\exp_4.png")
 
-        gameScreen.blit(expImg, each.get_location())
+            gameScreen.blit(expImg, each.get_location())
+        else:
+            #Ship: layer 1
+            expImgNum = each.get_image_number()
+            if expImgNum == 4:
+                expImg = pygame.image.load("Graphics_Assets\exp_1.png")
+            if expImgNum == 3:
+                expImg = pygame.image.load("Graphics_Assets\exp_2.png")
+            if expImgNum == 2:
+                expImg = pygame.image.load("Graphics_Assets\exp_3.png")
+            if expImgNum == 1:
+                expImg = pygame.image.load("Graphics_Assets\exp_4.png")
 
-    #Added Ship Explosion
+            gameScreen.blit(expImg, each.get_location())
+
+    #Ship: layer 2
     for each in explosionGroup:
-        shipExpNum = each.get_image_number()
-        if shipExpNum >= 4:
-            shipExpImg = pygame.image.load("Graphics_Assets\ship_exp_1.png")
-        if shipExpNum == 3:
-            shipExpImg = pygame.image.load("Graphics_Assets\ship_exp_2.png")
-        if shipExpNum == 2:
-            shipExpImg = pygame.image.load("Graphics_Assets\ship_exp_3.png")
-        if shipExpNum == 1:
-            shipExpImg = pygame.image.load("Graphics_Assets\ship_exp_4.png")
+        if each.get_name() == "ship":
+            shipExpNum = each.get_image_number()
+            if shipExpNum >= 4:
+                shipExpImg = pygame.image.load("Graphics_Assets\ship_exp_1.png")
+            if shipExpNum == 3:
+                shipExpImg = pygame.image.load("Graphics_Assets\ship_exp_2.png")
+            if shipExpNum == 2:
+                shipExpImg = pygame.image.load("Graphics_Assets\ship_exp_3.png")
+            if shipExpNum == 1:
+                shipExpImg = pygame.image.load("Graphics_Assets\ship_exp_4.png")
 
-                    
-        gameScreen.blit(shipExpImg, each.get_location())
+            gameScreen.blit(shipExpImg, each.get_location())
     
 
     #COLLISION CHECK
@@ -222,22 +245,7 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, gameScre
             c = collision(ship.get_position(), asteroid.get_location(), ship.get_radius(), asteroid.get_radius())
             if c == True:
                 
-                Explosion(ship.get_position(), 4, 0.5, 60)
-                '''
-                for each in explosionGroup:
-                    shipExpNum = each.get_image_number()
-                    if shipExpNum >= 4:
-                        shipExpImg = pygame.image.load("Graphics_Assets\ship_exp_1.png")
-                    if shipExpNum == 3:
-                        shipExpImg = pygame.image.load("Graphics_Assets\ship_exp_2.png")
-                    if shipExpNum == 2:
-                        shipExpImg = pygame.image.load("Graphics_Assets\ship_exp_3.png")
-                    if shipExpNum == 1:
-                        shipExpImg = pygame.image.load("Graphics_Assets\ship_exp_4.png")
-
-                    
-                    gameScreen.blit(shipExpImg, each.get_location())
-                '''
+                Explosion("ship", ship.get_position(), 4, 0.5, 60)
 
                 ship.death()
                
@@ -249,12 +257,27 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, gameScre
             if c == True:
                 bulletGroup.remove(bullet)
                 asteroid.make_small_asteroids()
+                Explosion("asteroid", asteroid.get_location(), 4, 0.5, 60)
+                ship.update_score()
+
+                if ship.get_score() % 1000 == 0:
+                    Player_up(asteroid.get_location())
+
                 asteroidGroup.remove(asteroid)
 
-                Explosion(asteroid.get_location(), 4, 0.5, 60)
-
-                ship.update_score()
-                
+    #Ship v Power Up
+    for each in playerUpGroup:
+        c = collision(ship.get_position(), each.get_location(), ship.get_radius(), each.get_radius())
+        if c == True:
+            powerUpType = random.randint(1,3)
+            if powerUpType == 1:
+                ship.add_life()
+            elif powerUpType == 2:
+                ship.activate_shield()
+            elif powerUpType == 3:
+                ship.activate_bulletPowerUp()
+        
+            playerUpGroup.remove(each)        
     
 
 
