@@ -94,10 +94,10 @@ def displayOptionsScreen(options):
                     
                     
                     
-            # if selection > 2:
-                # selection = 1
-            # if selection < 1:
-                # selection = 2
+        if selection > 2:
+            selection = 1
+        if selection < 1:
+            selection = 2
         
         # Setup Background
         backgroundimage = pygame.image.load("StarField_2.png")
