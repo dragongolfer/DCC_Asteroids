@@ -12,6 +12,8 @@ class Bullet(pygame.sprite.Sprite):
         self.speed = 15
         self.radius = 10
         self.large = size
+        if self.large == True:
+            self.radius = 45
         return
         
     def update(self, size): # Size is only used for the function call similarity with the ship and asteroid class

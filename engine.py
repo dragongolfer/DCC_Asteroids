@@ -76,7 +76,7 @@ def main(ship, asteroidGroup, explosionGroup, screen, lives, size):
                     if ship.get_bulletPowerUp():
                         Bullet(ship.get_position(), ship.get_angle(), True)
                     else:
-                        Bullet(ship.get_position(), ship.get_angle(), True)
+                        Bullet(ship.get_position(), ship.get_angle(), False)
 
         else:
             debug("END OF GAME DAMNIT!")
@@ -90,22 +90,7 @@ def main(ship, asteroidGroup, explosionGroup, screen, lives, size):
                         return True
             
         
-        # isShoot = False
-        # for event in pygame.event.get():#user does something
-            # if event.type == pygame.QUIT:
-                # pygame.quit()
-                # sys.exit()
-            # elif event.type == pygame.KEYDOWN:
-                # isShoot = ship.keydown(event)
-            # elif event.type == pygame.KEYUP:
-                # isShoot = ship.keyup(event)
-        # if isShoot:
-            # if ship.get_bulletPowerUp():
-                # Bullet(ship.get_position(), ship.get_angle(), True)
-            # else:
-                # Bullet(ship.get_position(), ship.get_angle(), True)
-            
-                
+     
         # Process Time Increment
         debug("STARTING PROCESS TIME INCREMENT")
         #for each in objectGroup, update time increment:
