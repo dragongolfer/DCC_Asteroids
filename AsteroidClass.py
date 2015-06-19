@@ -10,7 +10,7 @@ class Asteroid(pygame.sprite.Sprite):
         self.y_axis = 1 #sine runs paralell to the y-axis
         self.angle = random.randint(0, 360) #angle of rotation randomly selected 
         self.angle_of_rotation = random.randint(0,360)
-        self.angluar_momentum = 1 #amount of energy the asteroid has
+        self.angluar_momentum = 3 #amount of energy the asteroid has
         self.angular_velocity = 10 #one degree of rotation per clock tick, based on frame rate
         self.image = pygame.image.load("Asteroid.gif").convert() #just the image of the asteroids
         self.radius = 30

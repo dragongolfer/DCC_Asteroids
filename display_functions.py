@@ -143,7 +143,6 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, playerUp
     
     #Standard ship/shield/thrust
     elif ship.get_shield() == True:
-        print "shield active"
         if ship.get_thrust() == True:
             shipImg = pygame.image.load("Graphics_Assets\ship_1_shield_thrust.png")
         else:
