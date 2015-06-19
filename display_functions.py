@@ -134,16 +134,29 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, playerUp
     gameScreen.blit(background, (0,0))
     
     #SHIP BLIT
+    #Standard ship/thrust
     if ship.get_invincible() == False:
         if ship.get_thrust() == True:
             shipImg = pygame.image.load("Graphics_Assets\ship_1_thrust.png")
         else:
             shipImg = pygame.image.load("Graphics_Assets\ship_1.png")
+    
+    #Standard ship/shield/thrust
+    elif ship.get_shield() == True:
+        print "shield active"
+        if ship.get_thrust() == True:
+            shipImg = pygame.image.load("Graphics_Assets\ship_1_shield_thrust.png")
+        else:
+            shipImg = pygame.image.load("Graphics_Assets\ship_1_shield.png")        
+
+    #Ghost ship/thrust
     else:
         if ship.get_thrust() == True:
             shipImg = pygame.image.load("Graphics_Assets\ship_1_thrust_ghost.png")
         else:
             shipImg = pygame.image.load("Graphics_Assets\ship_1_ghost.png")
+    
+
     shipLoc = ship.get_position()
     shipAngle = ship.get_angle()
     rotShip = rot_center(shipImg, shipAngle)
@@ -167,7 +180,7 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, playerUp
 
     #POWERUP BLIT
     for each in playerUpGroup:
-        powerUpImg = pygame.image.load("Graphics_Assets\power_up_laser.bmp")
+        powerUpImg = pygame.image.load("Graphics_Assets\power_up.bmp")
         powerUpLoc = each.get_location()
         gameScreen.blit(powerUpImg, powerUpLoc)
         
@@ -279,6 +292,7 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, playerUp
         
             playerUpGroup.remove(each)        
     
+    
 
 
     size = setScreenSize(800, 800)
@@ -331,7 +345,7 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, playerUp
             saveHighScoresToFile(scoreList)
             ship.set_score_recorded(True)
         else:
-            print scoreList
+            pass
 
 
         #HIGH SCORES
