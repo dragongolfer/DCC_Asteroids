@@ -80,6 +80,8 @@ def main(ship, asteroidGroup, explosionGroup, screen, lives, size):
 
         else:
             debug("END OF GAME DAMNIT!")
+            ship_thrust_sound.stop()
+            ship_missile_sound.stop()
             endOfGamePause += 1 
             for event in pygame.event.get():#user does something
                 if event.type == pygame.QUIT:
