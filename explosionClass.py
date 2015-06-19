@@ -13,6 +13,7 @@ class Explosion(pygame.sprite.Sprite):
         self.startTime = timeForAnimation * frameRate
         self.counter = self.startTime
         self.image_increment = self.startTime / numberOfImages
+        self.id = "asteroid"
         return
         
     def update(self, size): # Size is only used for the function call similarity with the ship and asteroid class
@@ -27,3 +28,12 @@ class Explosion(pygame.sprite.Sprite):
         
     def get_counter(self):
         return self.counter
+        
+        
+    def set_id(self, id):
+        self.id = id
+        return
+    
+    
+    def get_id(self):
+        return self.id
