@@ -125,17 +125,28 @@ def highScoreBlit(highScore, index, gameScreen, background):
         gameScreen.blit(text, textPos)
     return
 
+def easterEgg(ship):
+    easterEgg = False
+    if ship.get_score() > 1000000 and ship.get_score() < 1000000:
+        easterEgg = True
+        return easterEgg
+
 def displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, playerUpGroup, gameScreen, size):
     #pygame.display.set_caption(str(clock.get_fps()))
 
     #SET BACKGROUND
-    bgImage = pygame.image.load("Graphics_Assets\star_ground_2.png")
+    if easterEgg(ship) == True:
+        bgImage = pygame.image.load("Graphics_Assets\grass_field.png")
+    else:
+        bgImage = pygame.image.load("Graphics_Assets\star_ground_2.png")
     background = pygame.transform.scale(bgImage, (size))
     gameScreen.blit(background, (0,0))
     
     #SHIP BLIT
     #Standard ship/thrust
-    if ship.get_invincible() == False:
+    if easterEgg(ship) == True:
+        shipImg = pygame.image.load("Graphics_Assets\hand_gun.png")
+    elif ship.get_invincible() == False:
         if ship.get_thrust() == True:
             shipImg = pygame.image.load("Graphics_Assets\ship_1_thrust.png")
         else:
@@ -166,10 +177,17 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, playerUp
     #ASTEROID BLIT
     for each in asteroidGroup:
         rad = each.get_radius()
-        if rad == 15:
-            aImg = pygame.image.load("Graphics_Assets\meteor_retro_3.png")
-        elif rad == 30:
-            aImg = pygame.image.load("Graphics_Assets\meteor_retro_2.png")
+        if easterEgg(ship) == True:
+            if rad == 15:
+                aImg = pygame.image.load("Graphics_Assets\\buffalo_small.png")
+            elif rad == 30:
+                aImg = pygame.image.load("Graphics_Assets\\buffalo.png")
+
+        else:
+            if rad == 15:
+                aImg = pygame.image.load("Graphics_Assets\meteor_retro_3.png")
+            elif rad == 30:
+                aImg = pygame.image.load("Graphics_Assets\meteor_retro_2.png")
         aLoc = each.get_location()
         aAngle = each.get_angle()
         rotAstr = rot_center(aImg, aAngle)
