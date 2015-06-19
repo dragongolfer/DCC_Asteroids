@@ -4,14 +4,14 @@ pygame.init()
 
 
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self, loc, angle):
+    def __init__(self, loc, angle, size):
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.x = float(loc[0])
         self.y = float(loc[1])
         self.angle = float(angle)
         self.speed = 15
         self.radius = 10
-        self.large = False
+        self.large = size
         return
         
     def update(self, size): # Size is only used for the function call similarity with the ship and asteroid class

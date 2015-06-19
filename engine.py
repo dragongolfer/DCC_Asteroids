@@ -25,6 +25,7 @@ from bulletClass import *       # Michael
 from explosionClass import *    # Michael
 from display_functions import * # Matt
 from OptionsScreen import *     # Michael
+from PlayerUp import *          # Rob
 
 pygame.init()
 
@@ -72,7 +73,10 @@ def main(ship, asteroidGroup, explosionGroup, screen, lives, size):
                     pygame.mixer.music.load('Graphics_Assets/fly.ogg')
                     pygame.mixer.music.play()
                 if isShoot:
-                    Bullet(ship.get_position(), ship.get_angle())
+                    if ship.get_bulletPowerUp():
+                        Bullet(ship.get_position(), ship.get_angle(), True)
+                    else:
+                        Bullet(ship.get_position(), ship.get_angle(), True)
 
         else:
             debug("END OF GAME DAMNIT!")
@@ -86,21 +90,25 @@ def main(ship, asteroidGroup, explosionGroup, screen, lives, size):
                         return True
             
         
-        isShoot = False
-        for event in pygame.event.get():#user does something
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            elif event.type == pygame.KEYDOWN:
-                isShoot = ship.keydown(event)
-            elif event.type == pygame.KEYUP:
-                isShoot = ship.keyup(event)
-        if isShoot:
-            Bullet(ship.get_position(), ship.get_angle())
+        # isShoot = False
+        # for event in pygame.event.get():#user does something
+            # if event.type == pygame.QUIT:
+                # pygame.quit()
+                # sys.exit()
+            # elif event.type == pygame.KEYDOWN:
+                # isShoot = ship.keydown(event)
+            # elif event.type == pygame.KEYUP:
+                # isShoot = ship.keyup(event)
+        # if isShoot:
+            # if ship.get_bulletPowerUp():
+                # Bullet(ship.get_position(), ship.get_angle(), True)
+            # else:
+                # Bullet(ship.get_position(), ship.get_angle(), True)
+            
                 
         # Process Time Increment
         debug("STARTING PROCESS TIME INCREMENT")
-        #for each in objectList:
+        #for each in objectGroup, update time increment:
         ship.update(size)
         for each in asteroidGroup:
             each.update(size)
@@ -113,6 +121,8 @@ def main(ship, asteroidGroup, explosionGroup, screen, lives, size):
             debug(("Exp" + str(each.get_location())))# + str(each.get_counter()))))
             if each.get_counter() <= 0:
                 explosionGroup.remove(each)
+        for each in playerUpGroup:
+            each.update(size)
 
             
            
@@ -122,7 +132,7 @@ def main(ship, asteroidGroup, explosionGroup, screen, lives, size):
 
         # Process Graphics
         debug("STARTING GRAPHICS ENGINE")
-        displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, screen, size)
+        displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, playerUpGroup, screen, size)
 
         if len(asteroidGroup) == 0:
             endOfRound = True
@@ -143,6 +153,9 @@ if __name__ == "__main__":
     Asteroid.groups = asteroidGroup
     explosionGroup = pygame.sprite.Group()
     Explosion.groups = explosionGroup
+    playerUpGroup = pygame.sprite.Group()
+    Player_up.groups = playerUpGroup
+    
     
     #Default Options
     options = ["ACE"]

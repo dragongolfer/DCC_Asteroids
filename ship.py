@@ -57,7 +57,12 @@ class Ship(pygame.sprite.Sprite):
         self.time_counter = 0
         self.shield_counter = 0
         self.shield = False
+        #counter used to knof how long the ship is in bullet powerup
+        self.bulletPowerup = False
+        self.bullet_counter = 0
+        
         self.score_recorded = False
+        
     
     def get_position(self):
         return (self.pos[0],self.pos[1])
@@ -124,6 +129,14 @@ class Ship(pygame.sprite.Sprite):
         else:
             self.shield = False
 
+        # counter value decrement for bullet powerup
+        if self.bullet_counter > 0:
+            self.bullet_counter -= 1
+        else:
+            self.bulletPowerup = False
+            
+            
+            
     def set_angle_vel(self, vel):
         self.angle_vel = vel
 
@@ -212,4 +225,13 @@ class Ship(pygame.sprite.Sprite):
 
     def get_name(self):
         return self.name
+        
+    def add_life(self):
+        self.lives += 1
 
+    def activate_bulletPowerUp(self):
+        self.bulletPowerup = True
+        self.bullet_counter = 600
+        
+    def get_bulletPowerUp(self):
+        return self.bulletPowerup

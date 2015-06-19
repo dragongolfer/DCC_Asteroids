@@ -4,10 +4,10 @@ import pygame
 pygame.init()
 
 class Player_up(pygame.sprite.Sprite):
-    def __init__(self):
+    def __init__(self, location):
         pygame.sprite.Sprite.__init__(self, self.groups)
-        self.x_axis = 1 #cosine runs paralell to the x-axis
-        self.y_axis = 1 #sine runs paralell to the y-axis
+        self.x_axis = location[0] #cosine runs paralell to the x-axis
+        self.y_axis = location[1] #sine runs paralell to the y-axis
         self.angle = random.randint(0, 360) #angle of rotation randomly selected 
         self.angle_of_rotation = random.randint(0,360)
         self.angluar_momentum = 10 #amount of energy the power up has
