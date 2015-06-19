@@ -166,6 +166,7 @@ if __name__ == "__main__":
             initial_vel = [0,0]
             initial_angle = 0
             ship = Ship(initial_pos_ship,initial_vel,initial_angle)
+            ship.set_name(options[0])
             
             while not gameOver:
                 # Hard coded number of asteroids. May change later depending on difficulty/level/rounds.
