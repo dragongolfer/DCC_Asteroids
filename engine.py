@@ -53,10 +53,11 @@ def main(ship, asteroidGroup, explosionGroup, screen, lives, size):
     while not endOfRound:
         # 60 Framse per second
         if debug(""): os.system('cls')
-        clock.tick(60) # Game will render at 60 frames per second
+        #clock.tick(60) 
     
         # Process User Inputs
         if ship.get_lives() > 0:
+            clock.tick(60) # Game will render at 60 frames per second
             # Player is still alive, Pass inputs to Ship class
             isShoot = False
             for event in pygame.event.get():#user does something
@@ -79,6 +80,7 @@ def main(ship, asteroidGroup, explosionGroup, screen, lives, size):
                         Bullet(ship.get_position(), ship.get_angle(), False)
 
         else:
+            clock.tick(10) # Game will render at 10 frames per second during death sequence
             debug("END OF GAME DAMNIT!")
             ship_thrust_sound.stop()
             ship_missile_sound.stop()
@@ -88,7 +90,7 @@ def main(ship, asteroidGroup, explosionGroup, screen, lives, size):
                     pygame.quit()
                     sys.exit()
                 elif event.type == pygame.KEYDOWN:
-                    if endOfGamePause > 180:
+                    if endOfGamePause > 20:
                         return True
             
         
