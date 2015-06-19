@@ -1,5 +1,5 @@
-Ace 6800
-Ace 6000
-Ace 5600
-Ace 5400
-Ace 4600
+MJR 1600
+Ace 500
+Ace 400
+Ace 300
+Ace 200

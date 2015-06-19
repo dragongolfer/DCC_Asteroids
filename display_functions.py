@@ -301,9 +301,10 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, gameScre
 
         #Call High Score File
         scoreList = readHighScoresFromFile()
+        player = ship.get_name()
         if ship.get_score_recorded() == False:
             finalScore = ship.get_score()
-            insertHighScore(scoreList, "Ace", finalScore)
+            insertHighScore(scoreList, player, finalScore)
             saveHighScoresToFile(scoreList)
             ship.set_score_recorded(True)
         else:
@@ -333,25 +334,6 @@ def displayGameScreen(ship, asteroidGroup, bulletGroup, explosionGroup, gameScre
         highScoreBlit(highScore4, 3, gameScreen, background)
         highScoreBlit(highScore5, 4, gameScreen, background)
 
-
-        
-
-
-
-
-        
-
-
-        '''
-        highScore1 = scoreList[0]
-        font = pygame.font.Font(None, 33)
-        text = font.render(str(highScore1[0]) + " " + str(highScore1[1]), 1, (255,255,255))#, (0,0,0))
-        textPos = text.get_rect()
-        textPos.centerx = background.get_rect().centerx
-        textPos.centery = background.get_rect().centery + 150
-
-        gameScreen.blit(text, textPos)
-        '''
 
 
     #DISPLAY UPDATE
