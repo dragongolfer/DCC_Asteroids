@@ -173,6 +173,8 @@ class Ship(pygame.sprite.Sprite):
     def activate_shield(self):
         self.shield = True
         self.shield_counter = 600
+        self.invincible = True
+        self.time_counter = 600
 
     def deactivate_shield(self):
         self.shield = False
